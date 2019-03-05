@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MOOSTANGS - Remote Scouting Client</title>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/swal.js"></script>
+    <script src="js/main.js"></script>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar fixed-top  navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">
+        We stan
+    </a>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+            <li class="nav-item active">
+                <a class="nav-link" href="#">
+                    <button id="enter-data" class="btn btn-outline-success my-2 my-sm-0" type="submit">Enter Data</button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <button id="view-data" class="btn btn-outline-success my-2 my-sm-0" type="submit">View Data</button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <button id="sync" class="btn btn-outline-success my-2 my-sm-0" type="submit">Sync</button>
+                </a>
+            </li>
+
+        </ul>
+        <div class="navbar-text">
+            <p id="last-synced" style="color: white">Last Synced: N/A</p>
+            <p id="auth-status" style="color: white">Signed in as: N/A</p>
+        </div>
+    </div>
+</nav>
+
+
+
+</body>
+</html>
