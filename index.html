@@ -5,6 +5,7 @@
     <title>MOOSTANGS - Remote Scouting Client</title>
 
     <script src="js/jquery.js"></script>
+    <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/swal.js"></script>
     <script src="js/main.js"></script>
@@ -14,40 +15,315 @@
 </head>
 <body>
 
-<nav class="navbar fixed-top  navbar-expand-lg navbar-dark bg-dark">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand" href="#">
-        We stan
-    </a>
+    <nav class="navbar fixed-top  navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+            <img src="img/logo.png" height="50px">
+        </a>
 
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 
-            <li class="nav-item active">
-                <a class="nav-link" href="#">
-                    <button id="enter-data" class="btn btn-outline-success my-2 my-sm-0" type="submit">Enter Data</button>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <button id="view-data" class="btn btn-outline-success my-2 my-sm-0" type="submit">View Data</button>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <button id="sync" class="btn btn-outline-success my-2 my-sm-0" type="submit">Sync</button>
-                </a>
-            </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">
+                        <button id="enter-data" class="btn btn-outline-success my-2 my-sm-0" type="submit">Enter Data</button>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <button id="view-data" class="btn btn-outline-success my-2 my-sm-0" type="submit">View Data</button>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <button id="sync" class="btn btn-outline-success my-2 my-sm-0" type="submit">Sync</button>
+                    </a>
+                </li>
 
-        </ul>
-        <div class="navbar-text">
-            <p id="last-synced" style="color: white">Last Synced: N/A</p>
-            <p id="auth-status" style="color: white">Signed in as: N/A</p>
+            </ul>
+            <div class="navbar-text">
+                <p id="last-synced" style="color: white">Last Synced: N/A</p>
+                <p id="auth-status" style="color: white">Signed in as: N/A</p>
+            </div>
         </div>
+    </nav>
+
+    <div style="padding-top: 100px; padding-left: 50px; padding-right: 50px">
+
+    <div id="enter-data-view">
+        <h1>Enter Data</h1>
+
+        <div class="row">
+
+            <div class="col-md-4">
+
+                <h3>General Information</h3>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="teamnumber-label">FRC</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Team #" aria-label="Team Number" aria-describedby="teamnumber-label">
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+
+                        <select class="custom-select" id="inputGroupSelect01">
+                            <option value="Q" selected>QUALIFICATIONS</option>
+                            <option value="QF">QUARTER FINALS</option>
+                            <option value="SF">SEMI FINALS</option>
+                            <option value="F">FINALS</option>
+                        </select>
+
+                    </div>
+                    <input type="text" class="form-control" placeholder="Match #" aria-label="Match #">
+                </div>
+
+
+            </div>
+
+            <div class="col-md-4">
+
+
+                <h3>Sandstorm</h3>
+
+
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col"><b>CARGO</b></th>
+                        <th sscope="col"><b>HATCH PANEL</b></td>
+                    </tr>
+                    </tdead>
+
+                    <tbody>
+
+                    <tr>
+                        <td>
+                            <b>CARGO SHIP</b>
+                        </td>
+                        <td>
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        </td>
+                        <td>
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>ROCKET</b>
+                        </td>
+                        <td>
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        </td>
+                        <td>
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="col-md-4">
+
+                <h3>&nbsp</h3>
+
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">&nbsp</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                    </tdead>
+
+                    <tbody>
+
+                    <tr>
+                        <td>
+                            <b>HAB START</b>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                <label class="form-check-label" for="inlineRadio1">Level 1</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                <label class="form-check-label" for="inlineRadio2">Level 2</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>CROSS LINE</b>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                <label class="form-check-label" for="inlineRadio1">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                <label class="form-check-label" for="inlineRadio2">No</label>
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <h3>
+            Match
+        </h3>
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col" colspan="2"><b>CARGO</b></th>
+                    <th sscope="col" colspan="2"><b>HATCH PANEL</b></td>
+                </tr>
+            </tdead>
+
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">SUCCESS</th>
+                    <th scope="col">FAIL</th>
+                    <th scope="col">SUCCESS</td>
+                    <th scope="col">FAIL</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+
+            <tr>
+                <td>CARGO SHIP</td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+            </tr>
+            <tr>
+                <td>ROCKET 1</td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+            </tr>
+            <tr>
+                <td>ROCKET 2</td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+            </tr>
+            <tr>
+                <td>ROCKET 3</td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+                <td>
+                    <input type="text" class="form-control">
+                </td>
+            </tr>
+
+            <!--
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="">Cargo Ship</span>
+                </div>
+                <input type="text" class="form-control">
+                <input type="text" class="form-control">
+            </div>-->
+
+            </tbody>
+        </table>
+
+        <hr>
+
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1"><b>Comments</b></label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1"><b>Strengths</b></label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1"><b>Weaknesses</b></label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+
+
+
     </div>
-</nav>
+
+    <div id="view-data-view">
+        <h1>View Data</h1>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">X</th>
+                <th scope="col">Y</th>
+                <th scope="col">PASSED</th>
+            </tr>
+            </thead>
+            <tbody id="table-contents">
+            </tbody>
+        </table>
+
+    </div>
+
+
+    </div>
 
 
 
