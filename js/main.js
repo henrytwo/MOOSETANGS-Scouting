@@ -215,9 +215,11 @@ $(document).ready(function () {
 
     var fields = {
         "radio" : ["climbLevel", "reliability", "crossLine", "habStart"],
-        "general" : ["teamNumber", "matchPrefix", "matchNumber", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "comments", "strengths", "weaknesses"],
+        "general" : ["scouterName", "teamNumber", "matchPrefix", "matchNumber", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "comments", "strengths", "weaknesses"],
         "checkbox" : ["cargoShipCargo", "cargoShipHatchPanel", "rocketCargo", "rocketHatchPanel"]
     }
+
+    var csvCaptions = ["teamNumber", "matchPrefix", "matchNumber", "scouterName",  "climbLevel", "reliability", "crossLine", "habStart", "cargoShipCargo", "cargoShipHatchPanel", "rocketCargo", "rocketHatchPanel", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "comments", "strengths", "weaknesses"]
 
     function injectData(data) {
         for (var i in fields["radio"]) {
@@ -260,6 +262,8 @@ $(document).ready(function () {
 
             out[id] = $('#' + id).is(":checked")
         }
+
+        out['eventName'] = localStorage.currentEvent
 
         return out;
 
@@ -306,7 +310,7 @@ $(document).ready(function () {
     $('#save').on('click', function() {
         var data = extractData()
 
-        addEntry(data['teamNumber'], data['matchPrefix'] + data['matchNumber'], data)
+        addEntry(data['teamNumber'], localStorage.currentEvent + '-' + data['matchPrefix'] + data['matchNumber'], data)
 
         swal('Saved', 'I think it\'s saved', 'success');
 
@@ -327,8 +331,82 @@ $(document).ready(function () {
         }
     })
 
+    $('#newEntry').on('click', function() {
+
+        swal({
+            title: "Are you sure?",
+            text: "All unsaved changes will be lost!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((generate) => {
+                if (generate) {
+
+                    injectData({'matchPrefix': 'Q'})
+
+                } else {
+                    swal("Mission aborted.");
+                }
+            });
+
+    });
+
+    $('#export').on('click', function() {
+        generateCSV(getLocalStorage())
+    })
 
     $('#sync').on('click', function() {
         injectData(getLocalStorage()['4903']['Q118'])
     })
+
+    function generateCSV(object) {
+        var csvCaptionString = JSON.stringify(csvCaptions)
+        var csv = csvCaptionString.substring(1, csvCaptionString.length-1) + "\n"
+
+        var teamNumbers = Object.keys(object)
+
+        for (var t = 0; t < teamNumbers.length; t++) {
+
+            var teamNumber = teamNumbers[t]
+            var matches = object[teamNumber]
+            var matchNames = Object.keys(matches)
+
+            for (var m = 0; m < matchNames.length; m++) {
+                var matchName = matchNames[m]
+                var match = matches[matchName]
+
+                console.log(teamNumber, matchName)
+
+                for (var i = 0; i < csvCaptions.length; i++) {
+                    csv += "\"" + match[csvCaptions[i]] + "\", "
+                }
+
+                csv += csv + "\n"
+            }
+
+            /*
+            csv += teams[i] + "\n";
+            for (var c = 1; c < object[names[i]].length + 1; c++) {
+                csv = csv + c.toString() + ",\"" + object[names[i]][c - 1].join("\",\"") + "\"\n"
+            }*/
+
+        }
+
+        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+        var link = document.createElement("a");
+        if (link.download !== undefined) { // feature detection
+            // Browsers that support HTML5 download attribute
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", Date() + ".csv");
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+
+    }
 });
