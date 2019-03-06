@@ -13,6 +13,27 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
 </head>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <body>
 
     <nav class="navbar fixed-top  navbar-expand-lg navbar-dark bg-dark">
@@ -44,8 +65,7 @@
 
             </ul>
             <div class="navbar-text">
-                <p id="last-synced" style="color: white">Last Synced: N/A</p>
-                <p id="auth-status" style="color: white">Signed in as: N/A</p>
+                <h3 id="current-event" style="color: white">WATERLOO EVENT</h3>
             </div>
         </div>
     </nav>
@@ -53,25 +73,48 @@
     <div style="padding-top: 100px; padding-left: 50px; padding-right: 50px">
 
     <div id="enter-data-view">
-        <h1>Enter Data</h1>
+
+        <h3>Event Configuration</h3>
+
+
+        <label for="eventName"><b>Event Name</b></label>
+        <div class="input-group mb-3">
+            <input id="eventName" type="text" class="form-control" placeholder="Event Name" aria-label="Event Name" aria-describedby="basic-addon2" value="Waterloo">
+            <div class="input-group-append">
+                <button id="saveEventName" class="btn btn-outline-secondary" type="button">Save</button>
+            </div>
+        </div>
+
+        <hr>
 
         <div class="row">
 
-            <div class="col-md-4">
+            <div class="col-md-6">
 
                 <h3>General Information</h3>
 
+
+                <label for="scouterName"><b>Scouter Name</b></label>
+                <div class="input-group mb-3">
+
+                    <input id="scouterName" type="text" class="form-control" placeholder="Super Cool Person" aria-label="Scouter Name" aria-describedby="teamnumber-label">
+                </div>
+
+
+                <label for="teamNumber"><b>Team Number</b></label>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="teamnumber-label">FRC</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Team #" aria-label="Team Number" aria-describedby="teamnumber-label">
+                    <input id="teamNumber" type="text" class="form-control" placeholder="Team #" aria-label="Team Number" aria-describedby="teamnumber-label">
                 </div>
 
+
+                <label for="matchNumber"><b>Match Number</b></label>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
 
-                        <select class="custom-select" id="inputGroupSelect01">
+                        <select class="custom-select" id="matchPrefix">
                             <option value="Q" selected>QUALIFICATIONS</option>
                             <option value="QF">QUARTER FINALS</option>
                             <option value="SF">SEMI FINALS</option>
@@ -79,23 +122,21 @@
                         </select>
 
                     </div>
-                    <input type="text" class="form-control" placeholder="Match #" aria-label="Match #">
+                    <input id="matchNumber" type="text" class="form-control" placeholder="Match #" aria-label="Match #">
                 </div>
 
 
             </div>
 
-            <div class="col-md-4">
-
-
+            <div class="col-md-6">
 
                 <table class="table">
                     <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col"><b>CARGO</b></th>
-                        <th sscope="col"><b>HATCH PANEL</b></td>
-                    </tr>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col"><b>CARGO</b></th>
+                            <th sscope="col"><b>HATCH PANEL</b></td>
+                        </tr>
                     </tdead>
 
                     <tbody>
@@ -105,10 +146,10 @@
                             <b>CARGO SHIP</b>
                         </td>
                         <td>
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <input class="form-check-input" type="checkbox" value="" id="cargoShipCargo">
                         </td>
                         <td>
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <input class="form-check-input" type="checkbox" value="" id="cargoShipHatchPanel">
                         </td>
                     </tr>
                     <tr>
@@ -116,19 +157,15 @@
                             <b>ROCKET</b>
                         </td>
                         <td>
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <input class="form-check-input" type="checkbox" value="" id="rocketCargo">
                         </td>
                         <td>
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <input class="form-check-input" type="checkbox" value="" id="rocketHatchPanel">
                         </td>
                     </tr>
 
                     </tbody>
                 </table>
-            </div>
-
-
-            <div class="col-md-4">
 
                 <table class="table">
                     <thead>
@@ -147,14 +184,14 @@
                         </td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                <label class="form-check-label" for="inlineRadio1">Level 1</label>
+                                <input class="form-check-input" type="radio" name="habStart" id="habStart1" value="1">
+                                <label class="form-check-label" for="habStart1">Level 1</label>
                             </div>
                         </td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                <label class="form-check-label" for="inlineRadio2">Level 2</label>
+                                <input class="form-check-input" type="radio" name="habStart" id="habStart2" value="2">
+                                <label class="form-check-label" for="habStart1">Level 2</label>
                             </div>
                         </td>
                     </tr>
@@ -164,14 +201,14 @@
                         </td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                <label class="form-check-label" for="inlineRadio1">Yes</label>
+                                <input class="form-check-input" type="radio" name="crossLine" id="crossLine1" value="1">
+                                <label class="form-check-label" for="crossLine1">Yes</label>
                             </div>
                         </td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                <label class="form-check-label" for="inlineRadio2">No</label>
+                                <input class="form-check-input" type="radio" name="crossLine" id="crossLine0" value="0">
+                                <label class="form-check-label" for="crossLine0">No</label>
                             </div>
                         </td>
                     </tr>
@@ -213,72 +250,63 @@
             <tr>
                 <td>CARGO SHIP</td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="cargoShipCargoSuccess" type="text" class="form-control">
                 </td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="cargoShipCargoFail" type="text" class="form-control">
                 </td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="cargoShipHPSuccess" type="text" class="form-control">
                 </td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="cargoShipHPFail" type="text" class="form-control">
                 </td>
             </tr>
             <tr>
                 <td>ROCKET 1</td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="rocket1CargoSuccess" type="text" class="form-control">
                 </td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="rocket1CargoFail" type="text" class="form-control">
                 </td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="rocket1HPSuccess" type="text" class="form-control">
                 </td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="rocket1HPFail" type="text" class="form-control">
                 </td>
             </tr>
             <tr>
                 <td>ROCKET 2</td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="rocket2CargoSuccess" type="text" class="form-control">
                 </td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="rocket2CargoFail" type="text" class="form-control">
                 </td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="rocket2HPSuccess" type="text" class="form-control">
                 </td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="rocket2HPFail" type="text" class="form-control">
                 </td>
             </tr>
             <tr>
                 <td>ROCKET 3</td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="rocket3CargoSuccess" type="text" class="form-control">
                 </td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="rocket3CargoFail" type="text" class="form-control">
                 </td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="rocket3HPSuccess" type="text" class="form-control">
                 </td>
                 <td>
-                    <input type="text" class="form-control">
+                    <input id="rocket3HPFail" type="text" class="form-control">
                 </td>
             </tr>
-
-            <!--
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="">Cargo Ship</span>
-                </div>
-                <input type="text" class="form-control">
-                <input type="text" class="form-control">
-            </div>-->
 
             </tbody>
         </table>
@@ -286,6 +314,24 @@
         <hr>
 
         <div class="row">
+            <div class="col-md-6">
+                <h3>Final Thoughts</h3>
+
+                <div class="form-group">
+                    <label for="comments"><b>Comments</b></label>
+                    <textarea class="form-control" id="comments" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="strengths"><b>Strengths</b></label>
+                    <textarea class="form-control" id="strengths" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="weaknesses"><b>Weaknesses</b></label>
+                    <textarea class="form-control" id="weaknesses" rows="3"></textarea>
+                </div>
+            </div>
             <div class="col-md-6">
                 <h3>End Game</h3>
 
@@ -299,35 +345,36 @@
                         </td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                <label class="form-check-label" for="inlineRadio1">No Climb</label>
+                                <input class="form-check-input" type="radio" name="climbLevel" id="climbLevel0" value="0">
+                                <label class="form-check-label" for="climbLevel0">No Climb</label>
                             </div>
                         </td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                <label class="form-check-label" for="inlineRadio1">Level 1</label>
+                                <input class="form-check-input" type="radio" name="climbLevel" id="climbLevel1" value="1">
+                                <label class="form-check-label" for="climbLevel1">1</label>
                             </div>
                         </td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                <label class="form-check-label" for="inlineRadio2">Level 2</label>
+                                <input class="form-check-input" type="radio" name="climbLevel" id="climbLevel2" value="2">
+                                <label class="form-check-label" for="climbLevel2">2</label>
                             </div>
                         </td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                <label class="form-check-label" for="inlineRadio2">Level 3</label>
+                                <input class="form-check-input" type="radio" name="climbLevel" id="climbLevel3" value="3">
+                                <label class="form-check-label" for="climbLevel3">3</label>
                             </div>
                         </td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>
                             <b>CLIMB SPEED (SEC)</b>
                         </td>
                         <td colspan="5">
-                            <input type="text" class="form-control">
+                            <input id="climbSpeed" type="text" class="form-control">
                         </td>
                     </tr>
                     <tr>
@@ -336,32 +383,32 @@
                         </td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                <label class="form-check-label" for="inlineRadio1">1</label>
+                                <input class="form-check-input" type="radio" name="reliability" id="reliability1" value="1">
+                                <label class="form-check-label" for="reliability1">1</label>
                             </div>
                         </td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                <label class="form-check-label" for="inlineRadio1">2</label>
+                                <input class="form-check-input" type="radio" name="reliability" id="reliability2" value="2">
+                                <label class="form-check-label" for="reliability2">2</label>
                             </div>
                         </td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                <label class="form-check-label" for="inlineRadio2">3</label>
+                                <input class="form-check-input" type="radio" name="reliability" id="reliability3" value="3">
+                                <label class="form-check-label" for="reliability3">3</label>
                             </div>
                         </td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                <label class="form-check-label" for="inlineRadio2">4</label>
+                                <input class="form-check-input" type="radio" name="reliability" id="reliability4" value="4">
+                                <label class="form-check-label" for="reliability4">4</label>
                             </div>
                         </td>
                         <td>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                <label class="form-check-label" for="inlineRadio2">5</label>
+                                <input class="form-check-input" type="radio" name="reliability" id="reliability5" value="5">
+                                <label class="form-check-label" for="reliability5">5</label>
                             </div>
                         </td>
                     </tr>
@@ -369,51 +416,13 @@
                     </tbody>
                 </table>
 
-            </div>
-            <div class="col-md-6">
-                <h3>Final Thoughts</h3>
 
-                <div class="form-group">
-                    <label for="exampleFormControlTextarea1"><b>Comments</b></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="exampleFormControlTextarea1"><b>Strengths</b></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="exampleFormControlTextarea1"><b>Weaknesses</b></label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div>
+                <button id="save" type="button" class="btn btn-success" style="width: 100%;">Save</button>
 
             </div>
+
         </div>
-
-
-
-
     </div>
-
-    <div id="view-data-view">
-        <h1>View Data</h1>
-
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">X</th>
-                <th scope="col">Y</th>
-                <th scope="col">PASSED</th>
-            </tr>
-            </thead>
-            <tbody id="table-contents">
-            </tbody>
-        </table>
-
-    </div>
-
 
     </div>
 
