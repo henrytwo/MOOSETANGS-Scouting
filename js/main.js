@@ -166,7 +166,7 @@ comments: {
 }
 *
 * Name: habStart
-* Name: crossLine
+* Name: crossedLine
 * Name: climbLevel
 * Name: reliability
 *
@@ -214,12 +214,14 @@ comments: {
 $(document).ready(function () {
 
     var fields = {
-        "radio" : ["climbLevel", "reliability", "crossLine", "habStart"],
+        "radio" : ["climbLevel", "reliability", "crossedLine", "habStart"],
         "general" : ["scouterName", "teamNumber", "matchPrefix", "matchNumber", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "comments", "strengths", "weaknesses"],
         "checkbox" : ["cargoShipCargo", "cargoShipHatchPanel", "rocketCargo", "rocketHatchPanel"]
     }
 
-    var csvCaptions = ["teamNumber", "matchPrefix", "matchNumber", "scouterName",  "climbLevel", "reliability", "crossLine", "habStart", "cargoShipCargo", "cargoShipHatchPanel", "rocketCargo", "rocketHatchPanel", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "comments", "strengths", "weaknesses"]
+    var csvCaptions = ["teamNumber", "matchPrefix", "matchNumber", "scouterName",  "climbLevel", "reliability", "crossedLine", "habStart", "cargoShipCargo", "cargoShipHatchPanel", "rocketCargo", "rocketHatchPanel", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "comments", "strengths", "weaknesses"]
+
+    var required = ["scouterName", "teamNumber", "matchNumber"]
 
     function injectData(data) {
         for (var i in fields["radio"]) {
@@ -269,8 +271,9 @@ $(document).ready(function () {
 
     }
 
-    if (localStorage.username) {
+    if (localStorage.currentEvent) {
         $('#current-event').html(localStorage.currentEvent + ' EVENT')
+        $('#eventName').val(localStorage.currentEvent)
     }
 
     function getLocalStorage() {
@@ -310,10 +313,24 @@ $(document).ready(function () {
     $('#save').on('click', function() {
         var data = extractData()
 
-        addEntry(data['teamNumber'], localStorage.currentEvent + '-' + data['matchPrefix'] + data['matchNumber'], data)
+        var requiredDone = true;
 
-        swal('Saved', 'I think it\'s saved', 'success');
+        for (var i = 0; i < required.length; i++) {
+            if (!data[required[i]]) {
+                requiredDone = false;
+                break
+            }
+        }
 
+        if (requiredDone) {
+
+            addEntry(data['teamNumber'], localStorage.currentEvent + '-' + data['matchPrefix'] + data['matchNumber'], data)
+
+            swal('Saved', 'I think it\'s saved', 'success');
+
+        } else {
+            swal('Unable to save', 'MAKE SURE TO FILL IN ALL REQUIRED FIELDS', 'error')
+        }
 
     })
 
@@ -323,7 +340,6 @@ $(document).ready(function () {
             localStorage.currentEvent = $('#eventName').val().toUpperCase()
 
             $('#current-event').html(localStorage.currentEvent + ' EVENT')
-
 
             swal('Event Name Saved', 'Event name set to: ' + localStorage.currentEvent, 'success')
         } else {
@@ -376,13 +392,13 @@ $(document).ready(function () {
                 var matchName = matchNames[m]
                 var match = matches[matchName]
 
-                console.log(teamNumber, matchName)
-
                 for (var i = 0; i < csvCaptions.length; i++) {
-                    csv += "\"" + match[csvCaptions[i]] + "\", "
+                    csv += "\"" + match[csvCaptions[i]] + (i == csvCaptions.length - 1 ? "\"" : "\", ")
                 }
 
-                csv += csv + "\n"
+                console.log(teamNumber, matchName)
+
+                csv += "\n"
             }
 
             /*
