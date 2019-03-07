@@ -418,7 +418,7 @@ $(document).ready(function () {
                 var pairName = teamName + '/' + matchNames[z]
 
                 out += '<option value="' + pairName + '" selected>' + pairName+ '</option>'
-                dropdownMap[pairName] = [teamName, matchNames]
+                dropdownMap[pairName] = [teamName, matchNames[z]]
             }
         }
 
