@@ -274,6 +274,8 @@ $(document).ready(function () {
     if (localStorage.currentEvent) {
         $('#current-event').html(localStorage.currentEvent + ' EVENT')
         $('#eventName').val(localStorage.currentEvent)
+    } else {
+        localStorage.currentEvent = 'WATERLOO'
     }
 
     function getLocalStorage() {
@@ -332,6 +334,8 @@ $(document).ready(function () {
             swal('Unable to save', 'MAKE SURE TO FILL IN ALL REQUIRED FIELDS', 'error')
         }
 
+        generateDropdown()
+
     })
 
     $('#saveEventName').on('click', function() {
@@ -350,9 +354,9 @@ $(document).ready(function () {
     $('#newEntry').on('click', function() {
 
         swal({
-            title: "Are you sure?",
+            title: "Are you sure you want to create a new match?",
             text: "All unsaved changes will be lost!",
-            icon: "warning",
+            type: "warning",
             buttons: true,
             dangerMode: true,
         })
@@ -368,6 +372,29 @@ $(document).ready(function () {
 
     });
 
+    $('#loadEntry').on('click', function() {
+
+        swal({
+            title: "Are you sure you want to load match?",
+            text: "All unsaved changes will be lost!",
+            type: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((generate) => {
+                if (generate) {
+
+                    var data = JSON.parse(sessionStorage.dropdownMap)[$('#matchSelection').val()]
+
+                    injectData(getLocalStorage()[data[0]][data[1]])
+
+                } else {
+                    swal("Mission aborted.");
+                }
+            });
+
+    })
+
     $('#export').on('click', function() {
         generateCSV(getLocalStorage())
     })
@@ -375,6 +402,34 @@ $(document).ready(function () {
     $('#sync').on('click', function() {
         injectData(getLocalStorage()['4903']['Q118'])
     })
+
+    function generateDropdown() {
+        var localData = getLocalStorage()
+        var teams = Object.keys(localData)
+
+        var out = ''
+        var dropdownMap = {}
+
+        for (var i = 0; i < teams.length; i++) {
+            var teamName = teams[i]
+            var matchNames = Object.keys(localData[teamName])
+
+            for (var z = 0; z < matchNames.length; z++) {
+                var pairName = teamName + '/' + matchNames[z]
+
+                out += '<option value="' + pairName + '" selected>' + pairName+ '</option>'
+                dropdownMap[pairName] = [teamName, matchNames]
+            }
+        }
+
+        sessionStorage.dropdownMap = JSON.stringify(dropdownMap)
+
+        $('#matchSelection').html(out)
+
+
+    }
+
+    generateDropdown()
 
     function generateCSV(object) {
         var csvCaptionString = JSON.stringify(csvCaptions)

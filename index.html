@@ -47,16 +47,6 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 
-                <li class="nav-item active">
-                    <a class="nav-link">
-                        <button id="export" class="btn btn-outline-success my-2 my-sm-0" type="submit">Export</button>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link">
-                        <button id="import" class="btn btn-outline-success my-2 my-sm-0" type="submit">Import</button>
-                    </a>
-                </li>
 
             </ul>
             <div class="navbar-text">
@@ -69,20 +59,53 @@
 
     <div id="enter-data-view">
 
-        <h3>Event Configuration</h3>
 
 
-        <label for="eventName"><b>Event Name</b></label>
-        <div class="input-group mb-3">
-            <input id="eventName" type="text" class="form-control" placeholder="Event Name" aria-label="Event Name" aria-describedby="basic-addon2" value="Waterloo">
-            <div class="input-group-append">
-                <button id="saveEventName" class="btn btn-outline-secondary" type="button">Save</button>
+
+
+        <div class="row">
+            <div class="col-md-4">
+                <h3>Event Configuration</h3>
+
+
+                <label for="eventName"><b>Event Name</b></label>
+                <div class="input-group mb-3">
+                    <input id="eventName" type="text" class="form-control" placeholder="Event Name" aria-label="Event Name" aria-describedby="basic-addon2" value="Waterloo">
+                    <div class="input-group-append">
+                        <button id="saveEventName" class="btn btn-outline-secondary" type="button">Save</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-4">
+
+                <button id="newEntry" type="button" class="btn btn-danger" style="width: 100%;s">New Entry</button>
+                <button id="newEntry" type="button" class="btn btn-primary" style="width: 100%; margin-top: 5px">Recompute Values</button>
+
+
+                <div class="btn-group btn-group-md" role="group" aria-label="" style="width: 100%">
+
+                    <button id="import" type="button" class="btn btn-warning" style="width: 100%; margin-top: 5px">Import</button>
+
+                    <button id="export" type="button" class="btn btn-success" style="width: 100%; margin-top: 5px">Export</button>
+
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3>View Existing Data</h3>
+
+                <!--
+                <label for="matchSelection"><b>Match</b></label>-->
+
+                <select class="custom-select" id="matchSelection">
+
+                </select>
+
+                <button id="loadEntry" type="button" class="btn btn-success" style="width: 100%; margin-top: 5px">Load</button>
+
             </div>
         </div>
-
-        <hr>
-
-            <button id="newEntry" type="button" class="btn btn-primary">New Entry</button>
 
         <hr>
 
