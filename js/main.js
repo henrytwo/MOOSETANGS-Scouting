@@ -504,6 +504,15 @@ function generateOverview() {
                 console.log(e)
             }
 
+            try {
+                if (matchData['climbSpeed']) {
+                    teamData[team]['climb' + matchData['climbLevel'] + 'Speed'] += parseInt(matchData['climbSpeed'])
+                }
+            } catch (e) {
+                console.log(e)
+            }
+
+
             for (var point in finalPoints) {
                 point = finalPoints[point]
 
