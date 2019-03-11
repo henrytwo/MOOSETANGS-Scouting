@@ -86,7 +86,7 @@ $(document).ready(function () {
             swal('Unable to save', 'MAKE SURE TO FILL IN ALL REQUIRED FIELDS', 'error')
         }
 
-        generateDropdown()
+        generateEntryDropdown()
 
     })
 
@@ -144,7 +144,10 @@ $(document).ready(function () {
                     swal("Mission aborted.");
                 }
             });
+    })
 
+    $('#loadTeam').on('click', function() {
+        loadTeam($('#teamSelection').val())
     })
 
     $('#import').on('click', function() {
@@ -155,7 +158,7 @@ $(document).ready(function () {
         generateMatchCSV(getLocalStorage())
     })
 
-    generateDropdown()
+    generateEntryDropdown()
 });
 
 function initFileImport() {
@@ -222,7 +225,7 @@ function upload(evt) {
             console.log(data)
 
             setLocalStorage(data)
-            generateDropdown()
+            generateEntryDropdown()
 
             swal('Imported!', 'Imported ' + newData + ' matches!', 'success')
 
@@ -233,7 +236,24 @@ function upload(evt) {
     }
 }
 
-function generateDropdown() {
+function generateTeamDropdown() {
+    var teamData = JSON.parse(sessionStorage.teamData)
+
+    var out = ''
+    var teamNames = Object.keys(teamData)
+
+    teamNames.sort()
+
+    for (var i = 0; i < teamNames.length; i++) {
+
+        out += '<option value="' + teamNames[i] + '" selected>' + teamNames[i] +  '</option>'
+    }
+
+    $('#teamSelection').html(out)
+}
+
+
+function generateEntryDropdown() {
     var localData = getLocalStorage()
     var teams = Object.keys(localData)
 
@@ -458,7 +478,9 @@ function generateOverview() {
 
             'comments': [],
             'strengths': [],
-            'weaknesses': []
+            'weaknesses': [],
+
+            'scoutedBy': []
             
         }
 
@@ -490,6 +512,8 @@ function generateOverview() {
                 }
             }
 
+            teamData[team]['scoutedBy'].push(matchData['scouterName'])
+
             stats['Entries']++
             teamData[team]['matches']++
         }
@@ -498,7 +522,7 @@ function generateOverview() {
             k = primaryKeys[k]
 
             if (teamData[team][k + 'Success'] + teamData[team][k + 'Fail'] != 0) {
-                teamData[team]['rates'][k] = (teamData[team][k + 'Success'] / (teamData[team][k + 'Success'] + teamData[team][k + 'Fail']) * 100).toFixed(2) + '%'
+                teamData[team]['rates'][k] = (teamData[team][k + 'Success'] / (teamData[team][k + 'Success'] + teamData[team][k + 'Fail']) * 100).toFixed(2)
             } else {
                 teamData[team]['rates'][k] = '0.00%'
 
@@ -508,7 +532,7 @@ function generateOverview() {
         }
 
         for (var i = 0; i < 4; i++) {
-            teamData[team]['rates']['climb' + i] = (100 * teamData[team]['climb' + i] / teamData[team]['matches']).toFixed(2) + '%'
+            teamData[team]['rates']['climb' + i] = (100 * teamData[team]['climb' + i] / teamData[team]['matches']).toFixed(2)
 
             if (i >= 2) {
                 teamData[team]['average']['climb' + i] = (teamData[team]['climb' + i + 'Speed'] / teamData[team]['matches']).toFixed(2)
@@ -521,9 +545,50 @@ function generateOverview() {
     console.log(teamData)
 
     for (var s in stats) {
-        buffer += s + ': ' + stats[s] + '<br>'
+        buffer += s + ': ' + stats[s] + ' | '
     }
 
-    $('#statistics').html(buffer)
+    buffer = buffer.substring(0, buffer.length - 3)
 
+    $('#statistics').html('<b>' + buffer + '</b>')
+
+    sessionStorage.teamData = JSON.stringify(teamData)
+
+
+}
+
+function loadTeam(team) {
+
+    var tableBuffer = ''
+    var teamData = JSON.parse(sessionStorage.teamData)
+
+    team = parseInt(team)
+
+    $('#preloadMessage').attr('hidden', true)
+    $('#teamView').attr('hidden', false)
+
+
+    for (var key in teamData[team]['rates']) {
+
+        tableBuffer += '<tr>\n' +
+            '    <td>\n' +
+            '        <b>' + key + '</b>\n' +
+            '    </td>\n' +
+            '    <td>\n' +
+            '        ' + teamData[team]['rates'][key] + '\n' +
+            '    </td>\n' +
+            '    <td>\n' +
+            '        ' + teamData[team]['average'][key] + '\n' +
+            '    </td>\n' +
+            ' </tr> '
+
+    }
+
+    $('#comments').html(teamData[team]['comments'].join('<br><br>'))
+    $('#strengths').html(teamData[team]['strengths'].join('<br><br>'))
+    $('#weakness').html(teamData[team]['weaknesses'].join('<br><br>'))
+
+    $('#scouted-by').html(teamData[team]['scoutedBy'].join(', '))
+
+    $('#overviewTableBody').html(tableBuffer)
 }

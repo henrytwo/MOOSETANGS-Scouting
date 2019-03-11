@@ -60,14 +60,114 @@
         </div>
     </nav>
 
-    <div style="padding-top: 100px; padding-left: 50px; padding-right: 50px; min-height: calc(100vh - 55px)">
+    <div style="padding-top: 100px; padding-left: 50px; padding-right: 50px; min-height: calc(100vh - 90px)">
 
-        <h3>Statistics</h3>
-        <p id="statistics">
-            Generating...
-        </p>
+        <div class="row">
+            <div class="col-md-2">
+                <p id="statistics" style="text-align: center;">
+                    Generating...
+                </p>
 
-        <button id="export-overview" type="button" class="btn btn-success">Export Overview</button>
+                <button id="export-overview" type="button" class="btn btn-success" style="width: 100%">Export Overview</button>
+            </div>
+
+            <div class="col-md-4">
+
+                <select class="custom-select" id="teamSelection">
+
+                </select>
+
+                <button id="loadTeam" type="button" class="btn btn-success" style="width: 100%; margin-top: 5px">Load</button>
+
+            </div>
+            <div class="col-md-1">
+                <p style="text-align: center">
+                    <b>
+                       Matches
+                    </b><br>
+                    <span id="matches">N/A</span>
+                </p>
+            </div>
+            <div class="col-md-5">
+
+                <b>Scouted by</b><br>
+                <div style="overflow: auto; border: black solid 1px; width: 100%; height: 70%; padding: 2px">
+                    <p id="scouted-by">
+                        N/A
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <hr>
+
+        <div id="preloadMessage">
+            <div style="height: 50vh"></div>
+            <h3 style="transform: translateY(-22vh); text-align: center">Select team to get started</h3>
+        </div>
+
+        <div id="teamView" hidden>
+
+
+            <table class="table">
+                <thead class="table-borderless">
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col"><b>Success Rate(%)</b></th>
+                    <th sscope="col"><b>Average Per Match</b></td>
+                </tr>
+                </thead>
+
+                <tbody id="overviewTableBody">
+
+                </tbody>
+            </table>
+
+            <hr>
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <h3>
+                        Comments
+                    </h3>
+
+                    <div style="overflow: auto; border: black solid 1px; width: 100%; height: 70%; padding: 2px">
+                        <p id="comments">
+                            N/A
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h3>
+                        Strengths
+                    </h3>
+
+                    <div style="overflow: auto; border: black solid 1px; width: 100%; height: 70%; padding: 2px">
+                        <p id="strengths">
+                            N/A
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h3>
+                        Weaknesses
+                    </h3>
+
+                    <div style="overflow: auto; border: black solid 1px; width: 100%; height: 70%; padding: 2px">
+                        <p id="weakness">
+                            N/A
+                        </p>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <br>
 
     </div>
 
@@ -83,6 +183,7 @@
 <script>
     $(document).ready(function() {
         generateOverview()
+        generateTeamDropdown()
     })
 </script>
 
