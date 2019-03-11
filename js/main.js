@@ -1,12 +1,86 @@
 var fields = {
-    "radio" : ["climbLevel", "crossedLine", "habStart"],
+    "radio" : ["climbLevel", "crossedLine", "sandstormControl", "habStart"],
     "general" : ["scouterName", "teamNumber", "matchPrefix", "matchNumber", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "comments", "strengths", "weaknesses", "climbFails"],
     "checkbox" : ["cargoShipCargo", "cargoShipHatchPanel", "rocketCargo", "rocketHatchPanel"]
 }
 
-var csvCaptions = ["teamNumber", "matchPrefix", "matchNumber", "scouterName", "habStart", "crossedLine", "rocketHatchPanel", "rocketCargo", "cargoShipHatchPanel", "cargoShipCargo", "cargoShipHPSuccess", "cargoShipHPFail", "cargoShipCargoSuccess", "cargoShipCargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket3HPSuccess", "rocket3HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "climbLevel", "climbSpeed", "climbFails", "comments", "strengths", "weaknesses"]
+var csvCaptions = ["teamNumber", "matchPrefix", "matchNumber", "scouterName", "habStart", "crossedLine", "sandstormControl", "rocketHatchPanel", "rocketCargo", "cargoShipHatchPanel", "cargoShipCargo", "cargoShipHPSuccess", "cargoShipHPFail", "cargoShipCargoSuccess", "cargoShipCargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket3HPSuccess", "rocket3HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "climbLevel", "climbSpeed", "climbFails", "comments", "strengths", "weaknesses"]
 
 var required = ["scouterName", "teamNumber", "matchNumber"]
+
+var teamTemplate = {
+
+    'cargoShipCargoSuccess':0,
+    'cargoShipCargoFail':0,
+    'cargoShipHPSuccess':0,
+    'cargoShipHPFail':0,
+
+    'rocket1CargoSuccess':0,
+    'rocket1CargoFail':0,
+    'rocket1HPSuccess':0,
+    'rocket1HPFail':0,
+
+    'rocket2CargoSuccess':0,
+    'rocket2CargoFail':0,
+    'rocket2HPSuccess':0,
+    'rocket2HPFail':0,
+
+    'rocket3CargoSuccess':0,
+    'rocket3CargoFail':0,
+    'rocket3HPSuccess':0,
+    'rocket3HPFail':0,
+
+    'climb0': 0,
+    'climb1': 0,
+    'climb2': 0,
+    'climb3': 0,
+
+    'climb2Speed': 0,
+    'climb3Speed': 0,
+
+    'climbFails': 0,
+
+    'rates' : {
+        'cargoShipCargo': 0,
+        'cargoShipHP': 0,
+        'rocket1Cargo': 0,
+        'rocket1HP': 0,
+        'rocket2Cargo': 0,
+        'rocket2HP': 0,
+        'rocket3Cargo': 0,
+        'rocket3HP': 0,
+
+        'climb0': 0,
+        'climb1': 0,
+        'climb2': 0,
+        'climb3': 0
+    },
+    'average' : {
+        'cargoShipCargo': 0,
+        'cargoShipHP': 0,
+        'rocket1Cargo': 0,
+        'rocket1HP': 0,
+        'rocket2Cargo': 0,
+        'rocket2HP': 0,
+        'rocket3Cargo': 0,
+        'rocket3HP': 0,
+
+        'climb0': 'N/A',
+        'climb1': 'N/A',
+        'climb2': 0,
+        'climb3': 0
+    },
+
+    'matches': 0,
+
+    'comments': [],
+    'strengths': [],
+    'weaknesses': [],
+
+    'scoutedBy': {}
+
+}
+
 
 $(document).ready(function () {
     function injectData(data) {
@@ -281,34 +355,79 @@ function generateEntryDropdown() {
     $('#matchSelection').html(out)
 }
 
-function generateTeamCSV(object) {
-    var csvCaptionString = JSON.stringify(csvCaptions)
-    var csv = csvCaptionString.substring(1, csvCaptionString.length-1) + "\n"
+function flattenObject(data, prefix = "", level = 0) {
+    var tempObj = {};
+    if (level < 6) {
+        Object.keys(data).forEach((key) => {
+            if (data[key] === Object(data[key])) {
+                //iterate again!
+                tempObj = Object.assign(tempObj, this.flattenObject(data[key], prefix + key + "/", level += 1));
+            }
+            else {
+                //log the value
+                tempObj[prefix + key] = data[key];
+            }
+        });
 
+        return tempObj;
+    }
+    else {
+        console.log("recursion limit reached!");
+        return {};
+    }
+}
+
+function generateTeamCSV(object) {
+
+    var csvCaptionString = ["teamNumber"]
     var teamNumbers = Object.keys(object)
+
+    var referenceKeys = Object.keys(flattenObject(teamTemplate))
+
+    for (var z in referenceKeys) {
+        csvCaptionString.push(referenceKeys[z])
+    }
+
+    console.log(csvCaptionString)
+
+    csvCaptionString = JSON.stringify(csvCaptionString)
+
+    var csv = csvCaptionString.substring(1, csvCaptionString.length-1) + "\n"
 
     for (var t = 0; t < teamNumbers.length; t++) {
 
-        var teamNumber = teamNumbers[t]
-        var matches = object[teamNumber]
-        var matchNames = Object.keys(matches)
+        object[teamNumbers[t]]['comments'] = object[teamNumbers[t]]['comments'].join('\\n')
+        object[teamNumbers[t]]['strengths'] = object[teamNumbers[t]]['strengths'].join('\\n')
+        object[teamNumbers[t]]['weaknesses'] = object[teamNumbers[t]]['weaknesses'].join('\\n')
+        object[teamNumbers[t]]['scoutedBy'] = JSON.stringify(object[teamNumbers[t]]['scoutedBy'])
 
-        for (var m = 0; m < matchNames.length; m++) {
-            var matchName = matchNames[m]
-            var match = matches[matchName]
+        var flattenedData = flattenObject(object[teamNumbers[t]])
 
-            csv += "\"" + matchName + "\", "
+        var keys = Object.keys(flattenedData)
 
-            for (var i = 0; i < csvCaptions.length; i++) {
-                csv += "\"" + match[csvCaptions[i]] + (i == csvCaptions.length - 1 ? "\"" : "\", ")
+        console.log(flattenedData)
+
+        csv += '"' + teamNumbers[t] + '",'
+
+        for (var i in keys) {
+
+            i = keys[i]
+
+            //console.log(i, flattenedData[i])
+
+            if (flattenedData[i]) {
+
+                csv += '"' + flattenedData[i].toString().replace(/"/g, '\'') + (i == keys.length - 1 ? "\"" : "\", ")
+            } else {
+                csv += '"0' + (i == keys.length - 1 ? "\"" : "\", ")
             }
-
-            console.log(teamNumber, matchName)
-
-            csv += "\n"
         }
 
+        csv += '\n'
+
+        //console.log(csv)
     }
+
 
     var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
 
@@ -457,80 +576,9 @@ function generateOverview() {
     var finalPoints = ['comments', 'strengths', 'weaknesses']
 
     for (var team in data) {
-        console.log(team)
+        //console.log(team)
         
-        teamData[team] = {
-
-            'cargoShipCargoSuccess':0,
-            'cargoShipCargoFail':0,
-            'cargoShipHPSuccess':0,
-            'cargoShipHPFail':0,
-            
-            'rocket1CargoSuccess':0,
-            'rocket1CargoFail':0,
-            'rocket1HPSuccess':0,
-            'rocket1HPFail':0,
-            
-            'rocket2CargoSuccess':0,
-            'rocket2CargoFail':0,
-            'rocket2HPSuccess':0,
-            'rocket2HPFail':0,
-            
-            'rocket3CargoSuccess':0,
-            'rocket3CargoFail':0,
-            'rocket3HPSuccess':0,
-            'rocket3HPFail':0,
-
-            'climb0': 0,
-            'climb1': 0,
-            'climb2': 0,
-            'climb3': 0,
-
-            'climb2Speed': 0,
-            'climb3Speed': 0,
-
-            'climbFails': 0,
-
-            'rates' : {
-                'cargoShipCargo': 0,
-                'cargoShipHP': 0,
-                'rocket1Cargo': 0,
-                'rocket1HP': 0,
-                'rocket2Cargo': 0,
-                'rocket2HP': 0,
-                'rocket3Cargo': 0,
-                'rocket3HP': 0,
-
-                'climb0': 0,
-                'climb1': 0,
-                'climb2': 0,
-                'climb3': 0
-            },
-            'average' : {
-                'cargoShipCargo': 0,
-                'cargoShipHP': 0,
-                'rocket1Cargo': 0,
-                'rocket1HP': 0,
-                'rocket2Cargo': 0,
-                'rocket2HP': 0,
-                'rocket3Cargo': 0,
-                'rocket3HP': 0,
-
-                'climb0': 'N/A',
-                'climb1': 'N/A',
-                'climb2': 0,
-                'climb3': 0
-            },
-            
-            'matches': 0,
-
-            'comments': [],
-            'strengths': [],
-            'weaknesses': [],
-
-            'scoutedBy': {}
-            
-        }
+        teamData[team] = JSON.parse(JSON.stringify(teamTemplate))
 
         for (var matchID in data[team]) {
             var matchData = data[team][matchID]
@@ -605,7 +653,7 @@ function generateOverview() {
         stats['Teams']++
     }
 
-    console.log(teamData)
+    //console.log(teamData)
 
     for (var s in stats) {
         buffer += s + ': ' + stats[s] + ' | '
