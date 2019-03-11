@@ -528,7 +528,7 @@ function generateOverview() {
             'strengths': [],
             'weaknesses': [],
 
-            'scoutedBy': []
+            'scoutedBy': {}
             
         }
 
@@ -569,7 +569,13 @@ function generateOverview() {
                 }
             }
 
-            teamData[team]['scoutedBy'].push(matchData['scouterName'])
+            matchData['scouterName'] = matchData['scouterName'].trim()
+
+            if (!teamData[team]['scoutedBy'][matchData['scouterName']]) {
+                teamData[team]['scoutedBy'][matchData['scouterName']] = 0
+            }
+
+            teamData[team]['scoutedBy'][matchData['scouterName']] ++
 
             stats['Entries']++
             teamData[team]['matches']++
@@ -647,7 +653,7 @@ function loadTeam(team) {
         $('#strengths').html(teamData[team]['strengths'].join('<br><br>'))
         $('#weakness').html(teamData[team]['weaknesses'].join('<br><br>'))
 
-        $('#scouted-by').html(teamData[team]['scoutedBy'].join(', '))
+        $('#scouted-by').html(JSON.stringify(teamData[team]['scoutedBy']))
         $('#matches').html(teamData[team]['matches'])
 
         $('#overviewTableBody').html(tableBuffer)
