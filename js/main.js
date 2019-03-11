@@ -592,7 +592,7 @@ function generateOverview() {
             teamData[team]['rates']['climb' + i] = (100 * teamData[team]['climb' + i] / teamData[team]['matches']).toFixed(2)
 
             if (i >= 2) {
-                teamData[team]['average']['climb' + i] = (teamData[team]['climb' + i + 'Speed'] / teamData[team]['matches']).toFixed(2)
+                teamData[team]['average']['climb' + i] = (teamData[team]['climb' + i + 'Speed'] / teamData[team]['matches']).toFixed(2) + ' secs'
             }
         }
 
