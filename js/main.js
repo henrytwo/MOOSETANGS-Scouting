@@ -214,12 +214,12 @@ comments: {
 $(document).ready(function () {
 
     var fields = {
-        "radio" : ["climbLevel", "reliability", "crossedLine", "habStart"],
-        "general" : ["scouterName", "teamNumber", "matchPrefix", "matchNumber", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "comments", "strengths", "weaknesses"],
+        "radio" : ["climbLevel", "crossedLine", "habStart"],
+        "general" : ["scouterName", "teamNumber", "matchPrefix", "matchNumber", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "comments", "strengths", "weaknesses", "climbFails"],
         "checkbox" : ["cargoShipCargo", "cargoShipHatchPanel", "rocketCargo", "rocketHatchPanel"]
     }
 
-    var csvCaptions = ["teamNumber", "matchPrefix", "matchNumber", "scouterName",  "climbLevel", "reliability", "crossedLine", "habStart", "cargoShipCargo", "cargoShipHatchPanel", "rocketCargo", "rocketHatchPanel", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "comments", "strengths", "weaknesses"]
+    var csvCaptions = ["teamNumber", "matchPrefix", "matchNumber", "scouterName", "habStart", "crossedLine", "rocketHatchPanel", "rocketCargo", "cargoShipHatchPanel", "cargoShipCargo", "cargoShipHPSuccess", "cargoShipHPFail", "cargoShipCargoSuccess", "cargoShipCargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket3HPSuccess", "rocket3HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "climbLevel", "climbSpeed", "climbFails", "comments", "strengths", "weaknesses"]
 
     var required = ["scouterName", "teamNumber", "matchNumber"]
 
@@ -395,12 +395,82 @@ $(document).ready(function () {
 
     })
 
-    $('#export').on('click', function() {
-        generateCSV(getLocalStorage())
+    document.getElementById('fileUpload').addEventListener('change', upload, false);
+
+    // Method that checks that the browser supports the HTML5 File API
+    function browserSupportFileUpload() {
+        var isCompatible = false;
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            isCompatible = true;
+        }
+        return isCompatible;
+    }
+
+    // Method that reads and processes the selected file
+    function upload(evt) {
+        if (!browserSupportFileUpload()) {
+            alert('The File APIs are not fully supported in this browser!');
+        } else {
+            var data = getLocalStorage();
+            var newData = 0;
+
+            var file = evt.target.files[0];
+            var reader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = function(event) {
+                var csvData = event.target.result;
+
+                csvData = csvData.split('\n')
+
+                for (var i = 0; i < csvData.length; i++) {
+                    csvData[i] = JSON.parse('[' + csvData[i] + ']')
+                }
+
+                var keys = csvData[0]
+
+                for (var i = 1; i < csvData.length; i++) {
+                    var teamNumber = csvData[i][keys.indexOf('teamNumber')]
+                    var matchID = csvData[i][keys.indexOf('matchID')]
+
+                    if (!teamNumber || !matchID) {
+                        continue
+                    }
+
+                    if (!data[teamNumber]) {
+                        data[teamNumber] = {}
+                    }
+
+                    data[teamNumber][matchID] = {}
+
+                    for (var n = 0; n < keys.length; n++) {
+                        data[teamNumber][matchID][keys[n]] = csvData[i][n]
+                    }
+
+                    newData ++
+
+
+                }
+
+                console.log(data)
+
+                setLocalStorage(data)
+                generateDropdown()
+
+                swal('Imported!', 'Imported ' + newData + ' matches!', 'success')
+
+            };
+            reader.onerror = function() {
+                alert('Unable to read ' + file.fileName);
+            };
+        }
+    }
+
+    $('#import').on('click', function() {
+        $('#fileUpload').click()
     })
 
-    $('#sync').on('click', function() {
-        injectData(getLocalStorage()['4903']['Q118'])
+    $('#export').on('click', function() {
+        generateMatchCSV(getLocalStorage())
     })
 
     function generateDropdown() {
@@ -431,9 +501,9 @@ $(document).ready(function () {
 
     generateDropdown()
 
-    function generateCSV(object) {
+    function generateMatchCSV(object) {
         var csvCaptionString = JSON.stringify(csvCaptions)
-        var csv = csvCaptionString.substring(1, csvCaptionString.length-1) + "\n"
+        var csv = "\"matchID\"," + csvCaptionString.substring(1, csvCaptionString.length-1) + "\n"
 
         var teamNumbers = Object.keys(object)
 
@@ -447,6 +517,8 @@ $(document).ready(function () {
                 var matchName = matchNames[m]
                 var match = matches[matchName]
 
+                csv += "\"" + matchName + "\", "
+
                 for (var i = 0; i < csvCaptions.length; i++) {
                     csv += "\"" + match[csvCaptions[i]] + (i == csvCaptions.length - 1 ? "\"" : "\", ")
                 }
@@ -455,12 +527,6 @@ $(document).ready(function () {
 
                 csv += "\n"
             }
-
-            /*
-            csv += teams[i] + "\n";
-            for (var c = 1; c < object[names[i]].length + 1; c++) {
-                csv = csv + c.toString() + ",\"" + object[names[i]][c - 1].join("\",\"") + "\"\n"
-            }*/
 
         }
 
@@ -481,3 +547,12 @@ $(document).ready(function () {
 
     }
 });
+
+function generateStatistics() {
+
+    var buffer = '';
+
+
+    $('#statistics').html(buffer)
+
+}

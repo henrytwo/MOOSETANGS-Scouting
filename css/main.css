@@ -1,3 +1,9 @@
 .navbar-text p {
     margin: 0;
 }
+
+#footer {
+    text-align: center;
+    background-color: gainsboro;
+    height: 50px;
+}

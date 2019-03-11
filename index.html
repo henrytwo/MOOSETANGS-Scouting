@@ -48,6 +48,11 @@
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 
 
+                <button type="button" class="btn btn-success">Data Entry</button>
+
+                <a href="overview.html">
+                    <button type="button" class="btn btn-outline-info" style="margin-left: 10px">Overview</button>
+                </a>
             </ul>
             <div class="navbar-text">
                 <h3 id="current-event" style="color: white">WATERLOO EVENT</h3>
@@ -56,12 +61,6 @@
     </nav>
 
     <div style="padding-top: 100px; padding-left: 50px; padding-right: 50px">
-
-    <div id="enter-data-view">
-
-
-
-
 
         <div class="row">
             <div class="col-md-4">
@@ -80,12 +79,12 @@
             <div class="col-md-4">
 
                 <button id="newEntry" type="button" class="btn btn-danger" style="width: 100%;s">New Entry</button>
-                <button id="newEntry" type="button" class="btn btn-primary" style="width: 100%; margin-top: 5px">Recompute Values</button>
-
 
                 <div class="btn-group btn-group-md" role="group" aria-label="" style="width: 100%">
 
-                    <button id="import" type="button" class="btn btn-warning" style="width: 100%; margin-top: 5px">Import</button>
+                    <input type="file" id="fileUpload" style="display:none;" />
+
+                    <button id="import" type="button" class="btn btn-primary" style="width: 100%; margin-top: 5px">Import</button>
 
                     <button id="export" type="button" class="btn btn-success" style="width: 100%; margin-top: 5px">Export</button>
 
@@ -396,41 +395,12 @@
                     </tr>
                     <tr>
                         <td>
-                            <b>CLIMB RELIABILITY (1-5)</b>
+                            <b>CLIMB FAIL #</b>
                         </td>
-                        <td>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="reliability" id="reliability1" value="1">
-                                <label class="form-check-label" for="reliability1">1</label>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="reliability" id="reliability2" value="2">
-                                <label class="form-check-label" for="reliability2">2</label>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="reliability" id="reliability3" value="3">
-                                <label class="form-check-label" for="reliability3">3</label>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="reliability" id="reliability4" value="4">
-                                <label class="form-check-label" for="reliability4">4</label>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="reliability" id="reliability5" value="5">
-                                <label class="form-check-label" for="reliability5">5</label>
-                            </div>
+                        <td colspan="5">
+                            <input id="climbFails" type="text" class="form-control">
                         </td>
                     </tr>
-
-                    </tbody>
                 </table>
 
 
@@ -439,9 +409,17 @@
             </div>
 
         </div>
-    </div>
 
     </div>
+
+    <br>
+
+<footer id="footer">
+    <div style="height: 50%"></div>
+    <p style="transform: translateY(-50%)">
+        Developed by Henry Tu
+    </p>
+</footer>
 
 
 
