@@ -559,36 +559,43 @@ function generateOverview() {
 
 function loadTeam(team) {
 
-    var tableBuffer = ''
-    var teamData = JSON.parse(sessionStorage.teamData)
+    try {
 
-    team = parseInt(team)
+        var tableBuffer = ''
+        var teamData = JSON.parse(sessionStorage.teamData)
 
-    $('#preloadMessage').attr('hidden', true)
-    $('#teamView').attr('hidden', false)
+        team = parseInt(team)
+
+        $('#preloadMessage').attr('hidden', true)
+        $('#teamView').attr('hidden', false)
 
 
-    for (var key in teamData[team]['rates']) {
+        for (var key in teamData[team]['rates']) {
 
-        tableBuffer += '<tr>\n' +
-            '    <td>\n' +
-            '        <b>' + key + '</b>\n' +
-            '    </td>\n' +
-            '    <td>\n' +
-            '        ' + teamData[team]['rates'][key] + '\n' +
-            '    </td>\n' +
-            '    <td>\n' +
-            '        ' + teamData[team]['average'][key] + '\n' +
-            '    </td>\n' +
-            ' </tr> '
+            tableBuffer += '<tr>\n' +
+                '    <td>\n' +
+                '        <b>' + key + '</b>\n' +
+                '    </td>\n' +
+                '    <td>\n' +
+                '        ' + teamData[team]['rates'][key] + '\n' +
+                '    </td>\n' +
+                '    <td>\n' +
+                '        ' + teamData[team]['average'][key] + '\n' +
+                '    </td>\n' +
+                ' </tr> '
 
+        }
+
+        $('#comments').html(teamData[team]['comments'].join('<br><br>'))
+        $('#strengths').html(teamData[team]['strengths'].join('<br><br>'))
+        $('#weakness').html(teamData[team]['weaknesses'].join('<br><br>'))
+
+        $('#scouted-by').html(teamData[team]['scoutedBy'].join(', '))
+        $('#matches').html(teamData[team]['matches'])
+
+        $('#overviewTableBody').html(tableBuffer)
+
+    } catch (e) {
+        swal('Error', 'Unable to load team', 'error')
     }
-
-    $('#comments').html(teamData[team]['comments'].join('<br><br>'))
-    $('#strengths').html(teamData[team]['strengths'].join('<br><br>'))
-    $('#weakness').html(teamData[team]['weaknesses'].join('<br><br>'))
-
-    $('#scouted-by').html(teamData[team]['scoutedBy'].join(', '))
-
-    $('#overviewTableBody').html(tableBuffer)
 }
