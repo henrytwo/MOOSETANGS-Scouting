@@ -412,23 +412,26 @@ $(document).ready(function () {
             alert('The File APIs are not fully supported in this browser!');
         } else {
             var data = getLocalStorage();
-            var newData = 0;
+
 
             var file = evt.target.files[0];
             var reader = new FileReader();
             reader.readAsText(file);
             reader.onload = function(event) {
+
+                var newData = 0;
                 var csvData = event.target.result;
 
-                csvData = csvData.split('\n')
+                csvData =  CSVToArray(csvData)
 
-                for (var i = 0; i < csvData.length; i++) {
-                    csvData[i] = JSON.parse('[' + csvData[i] + ']')
-                }
+                console.log(csvData)
+
 
                 var keys = csvData[0]
 
                 for (var i = 1; i < csvData.length; i++) {
+                    console.log(i)
+
                     var teamNumber = csvData[i][keys.indexOf('teamNumber')]
                     var matchID = csvData[i][keys.indexOf('matchID')]
 
@@ -555,4 +558,41 @@ function generateStatistics() {
 
     $('#statistics').html(buffer)
 
+}
+
+function CSVToArray( str ){
+
+    var arr = [];
+    var quote = false;  // true means we're inside a quoted field
+
+    // iterate over each character, keep track of current row and column (of the returned array)
+    for (var row = 0, col = 0, c = 0; c < str.length; c++) {
+        var cc = str[c], nc = str[c+1];        // current character, next character
+        arr[row] = arr[row] || [];             // create a new row if necessary
+        arr[row][col] = arr[row][col] || '';   // create a new column (start with empty string) if necessary
+
+        // If the current character is a quotation mark, and we're inside a
+        // quoted field, and the next character is also a quotation mark,
+        // add a quotation mark to the current column and skip the next character
+        if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }
+
+        // If it's just one quotation mark, begin/end quoted field
+        if (cc == '"') { quote = !quote; continue; }
+
+        // If it's a comma and we're not in a quoted field, move on to the next column
+        if (cc == ',' && !quote) { ++col; continue; }
+
+        // If it's a newline (CRLF) and we're not in a quoted field, skip the next character
+        // and move on to the next row and move to column 0 of that new row
+        if (cc == '\r' && nc == '\n' && !quote) { ++row; col = 0; ++c; continue; }
+
+        // If it's a newline (LF or CR) and we're not in a quoted field,
+        // move on to the next row and move to column 0 of that new row
+        if (cc == '\n' && !quote) { ++row; col = 0; continue; }
+        if (cc == '\r' && !quote) { ++row; col = 0; continue; }
+
+        // Otherwise, append the current character to the current column
+        arr[row][col] += cc;
+    }
+    return arr;
 }
