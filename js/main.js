@@ -158,6 +158,10 @@ $(document).ready(function () {
         generateMatchCSV(getLocalStorage())
     })
 
+    $('#export-overview').on('click', function() {
+        generateTeamCSV(JSON.parse(sessionStorage.teamData))
+    })
+
     generateEntryDropdown()
 });
 
@@ -277,6 +281,50 @@ function generateEntryDropdown() {
     $('#matchSelection').html(out)
 }
 
+function generateTeamCSV(object) {
+    var csvCaptionString = JSON.stringify(csvCaptions)
+    var csv = csvCaptionString.substring(1, csvCaptionString.length-1) + "\n"
+
+    var teamNumbers = Object.keys(object)
+
+    for (var t = 0; t < teamNumbers.length; t++) {
+
+        var teamNumber = teamNumbers[t]
+        var matches = object[teamNumber]
+        var matchNames = Object.keys(matches)
+
+        for (var m = 0; m < matchNames.length; m++) {
+            var matchName = matchNames[m]
+            var match = matches[matchName]
+
+            csv += "\"" + matchName + "\", "
+
+            for (var i = 0; i < csvCaptions.length; i++) {
+                csv += "\"" + match[csvCaptions[i]] + (i == csvCaptions.length - 1 ? "\"" : "\", ")
+            }
+
+            console.log(teamNumber, matchName)
+
+            csv += "\n"
+        }
+
+    }
+
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+    var link = document.createElement("a");
+    if (link.download !== undefined) { // feature detection
+        // Browsers that support HTML5 download attribute
+        var url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", 'teamoverview' + Date() + ".csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+}
+
 function generateMatchCSV(object) {
     var csvCaptionString = JSON.stringify(csvCaptions)
     var csv = "\"matchID\"," + csvCaptionString.substring(1, csvCaptionString.length-1) + "\n"
@@ -313,7 +361,7 @@ function generateMatchCSV(object) {
         // Browsers that support HTML5 download attribute
         var url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
-        link.setAttribute("download", Date() + ".csv");
+        link.setAttribute("download", 'matchoverview' + Date() + ".csv");
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
