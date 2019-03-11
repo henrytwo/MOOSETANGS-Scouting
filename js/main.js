@@ -545,7 +545,7 @@ function generateOverview() {
             }
 
             try {
-                if (matchData['climbLevel']) {
+                if (matchData['climbLevel'] && !isNaN(matchData['climbLevel'])) {
                     teamData[team]['climb' + matchData['climbLevel']]++
                 }
             } catch (e) {
@@ -553,7 +553,7 @@ function generateOverview() {
             }
 
             try {
-                if (matchData['climbSpeed']) {
+                if (matchData['climbSpeed'] && !isNaN(matchData['climbSpeed'])) {
                     teamData[team]['climb' + matchData['climbLevel'] + 'Speed'] += parseInt(matchData['climbSpeed'])
                 }
             } catch (e) {
