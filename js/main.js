@@ -1,228 +1,14 @@
-/*
-teamNumber : {
-    type: Number,
-        required: true
-},
-matchNumber : {
-    type: Number,
-        required: true
-},
-scouter : {
-    type: String,
-        required: true
-},
-timestamp : {
-    type: Number,
-        required: true
-},
-
-sandstorm: {
-    habStart : {
-        type: Number,
-            required: true
-    },
-    crossHab : {
-        type: Boolean,
-            required: true
-    },
-    rocket: {
-        hatchPanels: {
-            type: Boolean,
-                required: true
-        },
-        balls: {
-            type: Boolean,
-                required: true
-        }
-    },
-    cargoShip: {
-        hatchPanels: {
-            type: Boolean,
-                required: true
-        },
-        balls: {
-            type: Boolean,
-                required: true
-        }
-    }
-},
-
-match: {
-    rocket3: {
-        hatchPanels: {
-            attempted: {
-                type: Number,
-                    required: true
-            },
-            success: {
-                type: Number,
-                    required: true
-            }
-        },
-        balls: {
-            attempted: {
-                type: Number,
-                    required: true
-            },
-            success: {
-                type: Number,
-                    required: true
-            }
-        }
-    },
-    rocket2: {
-        hatchPanels: {
-            attempted: {
-                type: Number,
-                    required: true
-            },
-            success: {
-                type: Number,
-                    required: true
-            }
-        },
-        balls: {
-            attempted: {
-                type: Number,
-                    required: true
-            },
-            success: {
-                type: Number,
-                    required: true
-            }
-        }
-    },
-    rocket1: {
-        hatchPanels: {
-            attempted: {
-                type: Number,
-                    required: true
-            },
-            success: {
-                type: Number,
-                    required: true
-            }
-        },
-        balls: {
-            attempted: {
-                type: Number,
-                    required: true
-            },
-            success: {
-                type: Number,
-                    required: true
-            }
-        }
-    },
-    cargoShip: {
-        hatchPanels: {
-            attempted: {
-                type: Number,
-                    required: true
-            },
-            success: {
-                type: Number,
-                    required: true
-            }
-        },
-        balls: {
-            attempted: {
-                type: Number,
-                    required: true
-            },
-            success: {
-                type: Number,
-                    required: true
-            }
-        }
-    }
-},
-
-climb: {
-    habClimbLevel: {
-        type: Number,
-            required: true
-    },
-    speedOfClimb: {
-        type: Number,
-            required: true
-    },
-    reliability: {
-        type: Number,
-            required: true
-    }
-},
-
-comments: {
-    comments: {
-        type: String
-    },
-    strengths: {
-        type: String
-    },
-    weaknesses: {
-        type: String
-    }
+var fields = {
+    "radio" : ["climbLevel", "crossedLine", "habStart"],
+    "general" : ["scouterName", "teamNumber", "matchPrefix", "matchNumber", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "comments", "strengths", "weaknesses", "climbFails"],
+    "checkbox" : ["cargoShipCargo", "cargoShipHatchPanel", "rocketCargo", "rocketHatchPanel"]
 }
-*
-* Name: habStart
-* Name: crossedLine
-* Name: climbLevel
-* Name: reliability
-*
-* teamNumber
-* matchPrefix
-* matchNumber
-* cargoShipCargo
-* cargoShipHatchPanel
-* rocketCargo
-* rocketHatchPanel
-*
-*
-* cargoShipCargoSuccess
-* cargoShipCargoFail
-* cargoShipHPSuccess
-* cargoShipHPFail
-*
-* rocket1ShipCargoSuccess
-* rocket1ShipCargoFail
-* rocket1ShipHPSuccess
-* rocket1ShipHPFail
-*
-* rocket2ShipCargoSuccess
-* rocket2ShipCargoFail
-* rocket2ShipHPSuccess
-* rocket2ShipHPFail
-*
-* rocket3ShipCargoSuccess
-* rocket3ShipCargoFail
-* rocket3ShipHPSuccess
-* rocket3ShipHPFail
-*
-*
-* climbSpeed
-*
-*
-* save
-*
-* comments
-* strengths
-* weaknesses
-*
-* */
+
+var csvCaptions = ["teamNumber", "matchPrefix", "matchNumber", "scouterName", "habStart", "crossedLine", "rocketHatchPanel", "rocketCargo", "cargoShipHatchPanel", "cargoShipCargo", "cargoShipHPSuccess", "cargoShipHPFail", "cargoShipCargoSuccess", "cargoShipCargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket3HPSuccess", "rocket3HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "climbLevel", "climbSpeed", "climbFails", "comments", "strengths", "weaknesses"]
+
+var required = ["scouterName", "teamNumber", "matchNumber"]
 
 $(document).ready(function () {
-
-    var fields = {
-        "radio" : ["climbLevel", "crossedLine", "habStart"],
-        "general" : ["scouterName", "teamNumber", "matchPrefix", "matchNumber", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "comments", "strengths", "weaknesses", "climbFails"],
-        "checkbox" : ["cargoShipCargo", "cargoShipHatchPanel", "rocketCargo", "rocketHatchPanel"]
-    }
-
-    var csvCaptions = ["teamNumber", "matchPrefix", "matchNumber", "scouterName", "habStart", "crossedLine", "rocketHatchPanel", "rocketCargo", "cargoShipHatchPanel", "cargoShipCargo", "cargoShipHPSuccess", "cargoShipHPFail", "cargoShipCargoSuccess", "cargoShipCargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket3HPSuccess", "rocket3HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "climbLevel", "climbSpeed", "climbFails", "comments", "strengths", "weaknesses"]
-
-    var required = ["scouterName", "teamNumber", "matchNumber"]
-
     function injectData(data) {
         for (var i in fields["radio"]) {
             var id = fields["radio"][i]
@@ -276,40 +62,6 @@ $(document).ready(function () {
         $('#eventName').val(localStorage.currentEvent)
     } else {
         localStorage.currentEvent = 'WATERLOO'
-    }
-
-    function getLocalStorage() {
-        try {
-            return JSON.parse(localStorage.scoutingData)
-        } catch (e) {
-            return {}
-        }
-    }
-
-    function setLocalStorage(data) {
-        localStorage.scoutingData = JSON.stringify(data)
-    }
-
-    function addEntry (team, match, data) {
-
-        /*
-        * Data structure
-        * teams
-        * |-4903
-        *   |-Match #1
-        *       |-Some nice data
-        * */
-
-        var localData = getLocalStorage()
-
-        if (!localData.hasOwnProperty(team)) {
-            localData[team] = {}
-        }
-
-        localData[team][match] = data
-
-        setLocalStorage(localData)
-
     }
 
     $('#save').on('click', function() {
@@ -395,79 +147,6 @@ $(document).ready(function () {
 
     })
 
-    document.getElementById('fileUpload').addEventListener('change', upload, false);
-
-    // Method that checks that the browser supports the HTML5 File API
-    function browserSupportFileUpload() {
-        var isCompatible = false;
-        if (window.File && window.FileReader && window.FileList && window.Blob) {
-            isCompatible = true;
-        }
-        return isCompatible;
-    }
-
-    // Method that reads and processes the selected file
-    function upload(evt) {
-        if (!browserSupportFileUpload()) {
-            alert('The File APIs are not fully supported in this browser!');
-        } else {
-            var data = getLocalStorage();
-
-
-            var file = evt.target.files[0];
-            var reader = new FileReader();
-            reader.readAsText(file);
-            reader.onload = function(event) {
-
-                var newData = 0;
-                var csvData = event.target.result;
-
-                csvData =  CSVToArray(csvData)
-
-                console.log(csvData)
-
-
-                var keys = csvData[0]
-
-                for (var i = 1; i < csvData.length; i++) {
-                    console.log(i)
-
-                    var teamNumber = csvData[i][keys.indexOf('teamNumber')]
-                    var matchID = csvData[i][keys.indexOf('matchID')]
-
-                    if (!teamNumber || !matchID) {
-                        continue
-                    }
-
-                    if (!data[teamNumber]) {
-                        data[teamNumber] = {}
-                    }
-
-                    data[teamNumber][matchID] = {}
-
-                    for (var n = 0; n < keys.length; n++) {
-                        data[teamNumber][matchID][keys[n]] = csvData[i][n]
-                    }
-
-                    newData ++
-
-
-                }
-
-                console.log(data)
-
-                setLocalStorage(data)
-                generateDropdown()
-
-                swal('Imported!', 'Imported ' + newData + ' matches!', 'success')
-
-            };
-            reader.onerror = function() {
-                alert('Unable to read ' + file.fileName);
-            };
-        }
-    }
-
     $('#import').on('click', function() {
         $('#fileUpload').click()
     })
@@ -476,88 +155,164 @@ $(document).ready(function () {
         generateMatchCSV(getLocalStorage())
     })
 
-    function generateDropdown() {
-        var localData = getLocalStorage()
-        var teams = Object.keys(localData)
-
-        var out = ''
-        var dropdownMap = {}
-
-        for (var i = 0; i < teams.length; i++) {
-            var teamName = teams[i]
-            var matchNames = Object.keys(localData[teamName])
-
-            for (var z = 0; z < matchNames.length; z++) {
-                var pairName = teamName + '/' + matchNames[z]
-
-                out += '<option value="' + pairName + '" selected>' + pairName+ '</option>'
-                dropdownMap[pairName] = [teamName, matchNames[z]]
-            }
-        }
-
-        sessionStorage.dropdownMap = JSON.stringify(dropdownMap)
-
-        $('#matchSelection').html(out)
-
-
-    }
-
     generateDropdown()
-
-    function generateMatchCSV(object) {
-        var csvCaptionString = JSON.stringify(csvCaptions)
-        var csv = "\"matchID\"," + csvCaptionString.substring(1, csvCaptionString.length-1) + "\n"
-
-        var teamNumbers = Object.keys(object)
-
-        for (var t = 0; t < teamNumbers.length; t++) {
-
-            var teamNumber = teamNumbers[t]
-            var matches = object[teamNumber]
-            var matchNames = Object.keys(matches)
-
-            for (var m = 0; m < matchNames.length; m++) {
-                var matchName = matchNames[m]
-                var match = matches[matchName]
-
-                csv += "\"" + matchName + "\", "
-
-                for (var i = 0; i < csvCaptions.length; i++) {
-                    csv += "\"" + match[csvCaptions[i]] + (i == csvCaptions.length - 1 ? "\"" : "\", ")
-                }
-
-                console.log(teamNumber, matchName)
-
-                csv += "\n"
-            }
-
-        }
-
-        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-
-        var link = document.createElement("a");
-        if (link.download !== undefined) { // feature detection
-            // Browsers that support HTML5 download attribute
-            var url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", Date() + ".csv");
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-
-    }
 });
 
-function generateStatistics() {
+function initFileImport() {
+    document.getElementById('fileUpload').addEventListener('change', upload, false);
+}
 
-    var buffer = '';
+// Method that checks that the browser supports the HTML5 File API
+function browserSupportFileUpload() {
+    var isCompatible = false;
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+        isCompatible = true;
+    }
+    return isCompatible;
+}
+
+// Method that reads and processes the selected file
+function upload(evt) {
+    if (!browserSupportFileUpload()) {
+        alert('The File APIs are not fully supported in this browser!');
+    } else {
+        var data = getLocalStorage();
 
 
-    $('#statistics').html(buffer)
+        var file = evt.target.files[0];
+        var reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function(event) {
 
+            var newData = 0;
+            var csvData = event.target.result;
+
+            csvData =  CSVToArray(csvData)
+
+            console.log(csvData)
+
+
+            var keys = csvData[0]
+
+            for (var i = 1; i < csvData.length; i++) {
+                console.log(i)
+
+                var teamNumber = csvData[i][keys.indexOf('teamNumber')]
+                var matchID = csvData[i][keys.indexOf('matchID')]
+
+                if (!teamNumber || !matchID) {
+                    continue
+                }
+
+                if (!data[teamNumber]) {
+                    data[teamNumber] = {}
+                }
+
+                data[teamNumber][matchID] = {}
+
+                for (var n = 0; n < keys.length; n++) {
+                    data[teamNumber][matchID][keys[n]] = csvData[i][n]
+                }
+
+                newData ++
+
+
+            }
+
+            console.log(data)
+
+            setLocalStorage(data)
+            generateDropdown()
+
+            swal('Imported!', 'Imported ' + newData + ' matches!', 'success')
+
+        };
+        reader.onerror = function() {
+            alert('Unable to read ' + file.fileName);
+        };
+    }
+}
+
+function generateDropdown() {
+    var localData = getLocalStorage()
+    var teams = Object.keys(localData)
+
+    var out = ''
+    var dropdownMap = {}
+
+    for (var i = 0; i < teams.length; i++) {
+        var teamName = teams[i]
+        var matchNames = Object.keys(localData[teamName])
+
+        for (var z = 0; z < matchNames.length; z++) {
+            var pairName = teamName + '/' + matchNames[z]
+
+            out += '<option value="' + pairName + '" selected>' + pairName+ '</option>'
+            dropdownMap[pairName] = [teamName, matchNames[z]]
+        }
+    }
+
+    sessionStorage.dropdownMap = JSON.stringify(dropdownMap)
+
+    $('#matchSelection').html(out)
+}
+
+function generateMatchCSV(object) {
+    var csvCaptionString = JSON.stringify(csvCaptions)
+    var csv = "\"matchID\"," + csvCaptionString.substring(1, csvCaptionString.length-1) + "\n"
+
+    var teamNumbers = Object.keys(object)
+
+    for (var t = 0; t < teamNumbers.length; t++) {
+
+        var teamNumber = teamNumbers[t]
+        var matches = object[teamNumber]
+        var matchNames = Object.keys(matches)
+
+        for (var m = 0; m < matchNames.length; m++) {
+            var matchName = matchNames[m]
+            var match = matches[matchName]
+
+            csv += "\"" + matchName + "\", "
+
+            for (var i = 0; i < csvCaptions.length; i++) {
+                csv += "\"" + match[csvCaptions[i]] + (i == csvCaptions.length - 1 ? "\"" : "\", ")
+            }
+
+            console.log(teamNumber, matchName)
+
+            csv += "\n"
+        }
+
+    }
+
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+    var link = document.createElement("a");
+    if (link.download !== undefined) { // feature detection
+        // Browsers that support HTML5 download attribute
+        var url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", Date() + ".csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+
+}
+
+function getLocalStorage() {
+    try {
+        return JSON.parse(localStorage.scoutingData)
+    } catch (e) {
+        return {}
+    }
+}
+
+function setLocalStorage(data) {
+    localStorage.scoutingData = JSON.stringify(data)
 }
 
 function CSVToArray( str ){
@@ -595,4 +350,180 @@ function CSVToArray( str ){
         arr[row][col] += cc;
     }
     return arr;
+}
+
+function addEntry (team, match, data) {
+
+    /*
+    * Data structure
+    * teams
+    * |-4903
+    *   |-Match #1
+    *       |-Some nice data
+    * */
+
+    var localData = getLocalStorage()
+
+    if (!localData.hasOwnProperty(team)) {
+        localData[team] = {}
+    }
+
+    localData[team][match] = data
+
+    setLocalStorage(localData)
+
+}
+
+function generateOverview() {
+
+    var buffer = ''
+
+    var teamData = {}
+    var stats = {'Teams': 0, 'Entries': 0}
+
+    var data = getLocalStorage()
+
+    var primaryPoints = ['cargoShipCargoSuccess', 'cargoShipCargoFail', 'cargoShipHPSuccess', 'cargoShipHPFail', 'rocket1CargoSuccess', 'rocket1CargoFail', 'rocket1HPSuccess', 'rocket1HPFail', 'rocket2CargoSuccess', 'rocket2CargoFail', 'rocket2HPSuccess', 'rocket2HPFail', 'rocket3CargoSuccess', 'rocket3CargoFail', 'rocket3HPSuccess', 'rocket3HPFail']
+    var primaryKeys = ['cargoShipCargo', 'cargoShipHP', 'rocket1Cargo', 'rocket1HP', 'rocket2Cargo', 'rocket2HP', 'rocket3Cargo', 'rocket3HP']
+
+    var finalPoints = ['comments', 'strengths', 'weaknesses']
+
+    for (var team in data) {
+        console.log(team)
+        
+        teamData[team] = {
+
+            'cargoShipCargoSuccess':0,
+            'cargoShipCargoFail':0,
+            'cargoShipHPSuccess':0,
+            'cargoShipHPFail':0,
+            
+            'rocket1CargoSuccess':0,
+            'rocket1CargoFail':0,
+            'rocket1HPSuccess':0,
+            'rocket1HPFail':0,
+            
+            'rocket2CargoSuccess':0,
+            'rocket2CargoFail':0,
+            'rocket2HPSuccess':0,
+            'rocket2HPFail':0,
+            
+            'rocket3CargoSuccess':0,
+            'rocket3CargoFail':0,
+            'rocket3HPSuccess':0,
+            'rocket3HPFail':0,
+
+            'climb0': 0,
+            'climb1': 0,
+            'climb2': 0,
+            'climb3': 0,
+
+            'climb2Speed': 0,
+            'climb3Speed': 0,
+
+            'climbFails': 0,
+
+            'rates' : {
+                'cargoShipCargo': 0,
+                'cargoShipHP': 0,
+                'rocket1Cargo': 0,
+                'rocket1HP': 0,
+                'rocket2Cargo': 0,
+                'rocket2HP': 0,
+                'rocket3Cargo': 0,
+                'rocket3HP': 0,
+
+                'climb0': 0,
+                'climb1': 0,
+                'climb2': 0,
+                'climb3': 0
+            },
+            'average' : {
+                'cargoShipCargo': 0,
+                'cargoShipHP': 0,
+                'rocket1Cargo': 0,
+                'rocket1HP': 0,
+                'rocket2Cargo': 0,
+                'rocket2HP': 0,
+                'rocket3Cargo': 0,
+                'rocket3HP': 0,
+
+                'climb0': 'N/A',
+                'climb1': 'N/A',
+                'climb2': 0,
+                'climb3': 0
+            },
+            
+            'matches': 0,
+
+            'comments': [],
+            'strengths': [],
+            'weaknesses': []
+            
+        }
+
+        for (var matchID in data[team]) {
+            var matchData = data[team][matchID]
+
+            for (var point in primaryPoints) {
+
+                point = primaryPoints[point]
+
+                if (matchData[point] && !isNaN(matchData[point])) {
+                    teamData[team][point] += parseInt(matchData[point])
+                }
+            }
+
+            try {
+                if (matchData['climbLevel']) {
+                    teamData[team]['climb' + matchData['climbLevel']]++
+                }
+            } catch (e) {
+                console.log(e)
+            }
+
+            for (var point in finalPoints) {
+                point = finalPoints[point]
+
+                if (matchData[point]) {
+                    teamData[team][point].push(matchData[point])
+                }
+            }
+
+            stats['Entries']++
+            teamData[team]['matches']++
+        }
+
+        for (var k in primaryKeys) {
+            k = primaryKeys[k]
+
+            if (teamData[team][k + 'Success'] + teamData[team][k + 'Fail'] != 0) {
+                teamData[team]['rates'][k] = (teamData[team][k + 'Success'] / (teamData[team][k + 'Success'] + teamData[team][k + 'Fail']) * 100).toFixed(2) + '%'
+            } else {
+                teamData[team]['rates'][k] = '0.00%'
+
+            }
+
+            teamData[team]['average'][k] = (teamData[team][k + 'Success'] / teamData[team]['matches']).toFixed(2)
+        }
+
+        for (var i = 0; i < 4; i++) {
+            teamData[team]['rates']['climb' + i] = (100 * teamData[team]['climb' + i] / teamData[team]['matches']).toFixed(2) + '%'
+
+            if (i >= 2) {
+                teamData[team]['average']['climb' + i] = (teamData[team]['climb' + i + 'Speed'] / teamData[team]['matches']).toFixed(2)
+            }
+        }
+
+        stats['Teams']++
+    }
+
+    console.log(teamData)
+
+    for (var s in stats) {
+        buffer += s + ': ' + stats[s] + '<br>'
+    }
+
+    $('#statistics').html(buffer)
+
 }
