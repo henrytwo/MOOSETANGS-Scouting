@@ -8,6 +8,36 @@ var csvCaptions = ["teamNumber", "matchPrefix", "matchNumber", "scouterName", "h
 
 var required = ["scouterName", "teamNumber", "matchNumber"]
 
+var teamFilter = ['cargoShipCargoSuccess',
+    'cargoShipCargoFail',
+    'cargoShipHPSuccess',
+    'cargoShipHPFail',
+
+    'rocket1CargoSuccess',
+    'rocket1CargoFail',
+    'rocket1HPSuccess',
+    'rocket1HPFail',
+
+    'rocket2CargoSuccess',
+    'rocket2CargoFail',
+    'rocket2HPSuccess',
+    'rocket2HPFail',
+
+    'rocket3CargoSuccess',
+    'rocket3CargoFail',
+    'rocket3HPSuccess',
+    'rocket3HPFail',
+
+    'climb0',
+    'climb1',
+    'climb2',
+    'climb3',
+
+    'climb2Speed',
+    'climb3Speed',
+
+    'climbFails']
+
 var teamTemplate = {
 
     'cargoShipCargoSuccess':0,
@@ -382,13 +412,30 @@ function generateTeamCSV(object) {
     var csvCaptionString = ["teamNumber"]
     var teamNumbers = Object.keys(object)
 
-    var referenceKeys = Object.keys(flattenObject(teamTemplate))
+    var filteredTeamTemplate = JSON.parse(JSON.stringify(teamTemplate))
+
+    console.log(filteredTeamTemplate)
+
+    // Ok it's supepr ugly and jank but it works
+    for (var attacc in teamFilter) {
+        attacc = teamFilter[attacc]
+
+        delete filteredTeamTemplate[attacc]
+    }
+
+    var reinject = ['comments', 'strengths', 'weaknesses', 'scoutedBy']
+
+    for (var r in reinject) {
+        r = reinject[r]
+
+        filteredTeamTemplate[r] = 0
+    }
+
+    var referenceKeys = Object.keys(flattenObject(filteredTeamTemplate))
 
     for (var z in referenceKeys) {
         csvCaptionString.push(referenceKeys[z])
     }
-
-    console.log(csvCaptionString)
 
     csvCaptionString = JSON.stringify(csvCaptionString)
 
@@ -396,20 +443,29 @@ function generateTeamCSV(object) {
 
     for (var t = 0; t < teamNumbers.length; t++) {
 
-        object[teamNumbers[t]]['comments'] = object[teamNumbers[t]]['comments'].join('\\n')
-        object[teamNumbers[t]]['strengths'] = object[teamNumbers[t]]['strengths'].join('\\n')
-        object[teamNumbers[t]]['weaknesses'] = object[teamNumbers[t]]['weaknesses'].join('\\n')
+        object[teamNumbers[t]]['comments'] = object[teamNumbers[t]]['comments'].join('\r')
+        object[teamNumbers[t]]['strengths'] = object[teamNumbers[t]]['strengths'].join('\r')
+        object[teamNumbers[t]]['weaknesses'] = object[teamNumbers[t]]['weaknesses'].join('\r')
         object[teamNumbers[t]]['scoutedBy'] = JSON.stringify(object[teamNumbers[t]]['scoutedBy'])
+
+        for (var attacc in teamFilter) {
+            attacc = teamFilter[attacc]
+
+            delete object[teamNumbers[t]][attacc]
+        }
+
 
         var flattenedData = flattenObject(object[teamNumbers[t]])
 
         var keys = Object.keys(flattenedData)
 
-        console.log(flattenedData)
-
         csv += '"' + teamNumbers[t] + '",'
 
         for (var i in keys) {
+
+            if (i >= referenceKeys.length) {
+                break
+            }
 
             i = keys[i]
 
@@ -419,7 +475,7 @@ function generateTeamCSV(object) {
 
                 csv += '"' + flattenedData[i].toString().replace(/"/g, '\'') + (i == keys.length - 1 ? "\"" : "\", ")
             } else {
-                csv += '"0' + (i == keys.length - 1 ? "\"" : "\", ")
+                csv += '"undefined' + (i == keys.length - 1 ? "\"" : "\", ")
             }
         }
 
@@ -635,7 +691,7 @@ function generateOverview() {
             if (teamData[team][k + 'Success'] + teamData[team][k + 'Fail'] != 0) {
                 teamData[team]['rates'][k] = (teamData[team][k + 'Success'] / (teamData[team][k + 'Success'] + teamData[team][k + 'Fail']) * 100).toFixed(2)
             } else {
-                teamData[team]['rates'][k] = '0.00%'
+                teamData[team]['rates'][k] = '0.00'
 
             }
 
