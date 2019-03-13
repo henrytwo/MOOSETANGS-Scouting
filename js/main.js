@@ -639,6 +639,12 @@ function generateOverview() {
         for (var matchID in data[team]) {
             var matchData = data[team][matchID]
 
+            if (!(parseInt(matchData['habStart']) >= 1)) {
+                console.log('Skipped entry')
+
+                continue
+            }
+
             for (var point in primaryPoints) {
 
                 point = primaryPoints[point]
