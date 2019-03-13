@@ -129,7 +129,7 @@ $(document).ready(function () {
         for (var i in fields["checkbox"]) {
             var id = fields["checkbox"][i]
 
-            $('#' + id).prop('checked', data[id])
+            $('#' + id).prop('checked', data[id].toLowerCase())
         }
     }
 
