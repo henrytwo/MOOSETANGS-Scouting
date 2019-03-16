@@ -133,6 +133,24 @@ $(document).ready(function () {
         }
     }
 
+    function clear() {
+        $('input[type="radio"]').prop('checked', false);
+
+        for (var i in fields["general"]) {
+            var id = fields["general"][i]
+
+            $('#' + id).val('')
+        }
+
+        for (var i in fields["checkbox"]) {
+            var id = fields["checkbox"][i]
+
+            $('#' + id).prop('checked', false)
+        }
+
+        $('#matchPrefix').val('Q')
+    }
+
     function extractData() {
 
         var out = {};
@@ -191,6 +209,8 @@ $(document).ready(function () {
         }
 
         generateEntryDropdown()
+
+        clear()
 
     })
 
@@ -639,7 +659,7 @@ function generateOverview() {
         for (var matchID in data[team]) {
             var matchData = data[team][matchID]
 
-            if (!(parseInt(matchData['habStart']) >= 1)) {
+            if (!(parseInt(matchData['habStart']) >= 1) || matchData['matchPrefix'] === 'P') {
                 console.log('Skipped entry')
 
                 continue
