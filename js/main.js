@@ -660,7 +660,7 @@ function generateOverview() {
             var matchData = data[team][matchID]
 
             if (!(parseInt(matchData['habStart']) >= 1) || matchData['matchPrefix'] === 'P') {
-                console.log('Skipped entry')
+                console.log('Skipped entry', matchID, !(parseInt(matchData['habStart']) >= 1), matchData['matchPrefix'] === 'P')
 
                 continue
             }
@@ -669,9 +669,22 @@ function generateOverview() {
 
                 point = primaryPoints[point]
 
-                if (matchData[point] && !isNaN(matchData[point])) {
+                if (isNaN(teamData[team][point])) {
+                    teamData[team][point] = 0
+                }
+
+                if (matchData[point] && !isNaN(matchData[point]) && !isNaN(parseInt(matchData[point]))) {
                     teamData[team][point] += parseInt(matchData[point])
                 }
+
+                if (team == '1305') {
+                    console.log('good stuff', teamData[team][point], parseInt(matchData[point]), point)
+                }
+
+            }
+
+            if (!teamData[team][point]) {
+                teamData[team][point] = 0
             }
 
             try {
@@ -680,6 +693,10 @@ function generateOverview() {
                 }
             } catch (e) {
                 console.log(e)
+            }
+
+            if (!teamData[team][point]) {
+                teamData[team][point] = 0
             }
 
             try {
@@ -715,6 +732,9 @@ function generateOverview() {
             k = primaryKeys[k]
 
             if (teamData[team][k + 'Success'] + teamData[team][k + 'Fail'] != 0) {
+
+                console.log('rates', teamData[team][k + 'Success'], teamData[team][k + 'Success'] + teamData[team][k + 'Fail'])
+
                 teamData[team]['rates'][k] = (teamData[team][k + 'Success'] / (teamData[team][k + 'Success'] + teamData[team][k + 'Fail']) * 100).toFixed(2)
             } else {
                 teamData[team]['rates'][k] = '0.00'
@@ -765,17 +785,46 @@ function loadTeam(team) {
 
         for (var key in teamData[team]['rates']) {
 
-            tableBuffer += '<tr>\n' +
-                '    <td>\n' +
-                '        <b>' + key + '</b>\n' +
-                '    </td>\n' +
-                '    <td>\n' +
-                '        ' + teamData[team]['rates'][key] + '\n' +
-                '    </td>\n' +
-                '    <td>\n' +
-                '        ' + teamData[team]['average'][key] + '\n' +
-                '    </td>\n' +
-                ' </tr> '
+            console.log(key, key == 'climb0')
+
+            if (key == 'climb0') {
+                tableBuffer += '<tr>' +
+                    '<td></td>' +
+                    '<td>Success Rate (%)</td>' +
+                    '<td>Usage Rate (%)</td>' +
+                    '<td></td>' +
+                    '</tr>'
+            }
+
+            if (!key.includes('climb')) {
+
+                tableBuffer += '<tr>\n' +
+                    '    <td>\n' +
+                    '        <b>' + key + '</b>\n' +
+                    '    </td>\n' +
+                    '    <td>\n' +
+                    '        ' + teamData[team]['rates'][key] + '\n' +
+                    '    </td>\n' +
+                    '    <td>\n' +
+                    '        ' + teamData[team]['average'][key] + '\n' +
+                    '    </td>\n' +
+                    ' </tr> '
+
+            } else {
+
+                tableBuffer += '<tr>\n' +
+                    '    <td>\n' +
+                    '        <b>ASDASD' + key + '</b>\n' +
+                    '    </td>\n' +
+                    '    <td>\n' +
+                    '        ' + teamData[team]['rates'][key] + '\n' +
+                    '    </td>\n' +
+                    '    <td>\n' +
+                    '        ' + teamData[team]['average'][key] + '\n' +
+                    '    </td>\n' +
+                    ' </tr> '
+
+            }
 
         }
 
