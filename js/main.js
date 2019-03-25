@@ -239,7 +239,7 @@ $(document).ready(function () {
             .then((generate) => {
                 if (generate) {
 
-                    injectData({'matchPrefix': 'Q'})
+                    injectData({'matchPrefix': 'Q', 'cargoShipCargoSuccess': 0, 'cargoShipCargoFail': 0, 'cargoShipHPSuccess': 0, 'cargoShipHPFail': 0, 'rocket1CargoSuccess': 0, 'rocket1CargoFail': 0, 'rocket1HPSuccess': 0, 'rocket1HPFail': 0, 'rocket2CargoSuccess': 0, 'rocket2CargoFail': 0, 'rocket2HPSuccess': 0, 'rocket2HPFail': 0, 'rocket3CargoSuccess': 0, 'rocket3CargoFail': 0, 'rocket3HPSuccess': 0, 'rocket3HPFail': 0})
 
                 } else {
                     swal("Mission aborted.");
