@@ -1,10 +1,10 @@
 var fields = {
-    "radio" : ["climbLevel", "crossedLine", "sandstormControl", "habStart"],
-    "general" : ["scouterName", "teamNumber", "matchPrefix", "matchNumber", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "comments", "strengths", "weaknesses", "climbFails"],
+    "radio" : ["climbLevel", "crossedLine", "habStart"],
+    "general" : ["scouterName", "teamNumber", "matchPrefix", "matchNumber", "cargoShipCargoSuccess", "cargoShipCargoFail", "cargoShipHPSuccess", "cargoShipHPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "rocket3HPSuccess", "rocket3HPFail", "climbSpeed", "strengths", "weaknesses", "climbFails"],
     "checkbox" : ["cargoShipCargo", "cargoShipHatchPanel", "rocketCargo", "rocketHatchPanel"]
 }
 
-var csvCaptions = ["teamNumber", "matchPrefix", "matchNumber", "scouterName", "habStart", "crossedLine", "sandstormControl", "rocketHatchPanel", "rocketCargo", "cargoShipHatchPanel", "cargoShipCargo", "cargoShipHPSuccess", "cargoShipHPFail", "cargoShipCargoSuccess", "cargoShipCargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket3HPSuccess", "rocket3HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "climbLevel", "climbSpeed", "climbFails", "comments", "strengths", "weaknesses"]
+var csvCaptions = ["teamNumber", "matchPrefix", "matchNumber", "scouterName", "habStart", "crossedLine", "rocketHatchPanel", "rocketCargo", "cargoShipHatchPanel", "cargoShipCargo", "cargoShipHPSuccess", "cargoShipHPFail", "cargoShipCargoSuccess", "cargoShipCargoFail", "rocket1HPSuccess", "rocket1HPFail", "rocket1CargoSuccess", "rocket1CargoFail", "rocket2HPSuccess", "rocket2HPFail", "rocket2CargoSuccess", "rocket2CargoFail", "rocket3HPSuccess", "rocket3HPFail", "rocket3CargoSuccess", "rocket3CargoFail", "climbLevel", "climbSpeed", "climbFails", "strengths", "weaknesses"]
 
 var required = ["scouterName", "teamNumber", "matchNumber"]
 
@@ -103,7 +103,6 @@ var teamTemplate = {
 
     'matches': 0,
 
-    'comments': [],
     'strengths': [],
     'weaknesses': [],
 
@@ -443,7 +442,7 @@ function generateTeamCSV(object) {
         delete filteredTeamTemplate[attacc]
     }
 
-    var reinject = ['comments', 'strengths', 'weaknesses', 'scoutedBy']
+    var reinject = ['strengths', 'weaknesses', 'scoutedBy']
 
     for (var r in reinject) {
         r = reinject[r]
@@ -463,7 +462,6 @@ function generateTeamCSV(object) {
 
     for (var t = 0; t < teamNumbers.length; t++) {
 
-        object[teamNumbers[t]]['comments'] = object[teamNumbers[t]]['comments'].join('\r')
         object[teamNumbers[t]]['strengths'] = object[teamNumbers[t]]['strengths'].join('\r')
         object[teamNumbers[t]]['weaknesses'] = object[teamNumbers[t]]['weaknesses'].join('\r')
         object[teamNumbers[t]]['scoutedBy'] = JSON.stringify(object[teamNumbers[t]]['scoutedBy'])
@@ -649,7 +647,7 @@ function generateOverview() {
     var primaryPoints = ['cargoShipCargoSuccess', 'cargoShipCargoFail', 'cargoShipHPSuccess', 'cargoShipHPFail', 'rocket1CargoSuccess', 'rocket1CargoFail', 'rocket1HPSuccess', 'rocket1HPFail', 'rocket2CargoSuccess', 'rocket2CargoFail', 'rocket2HPSuccess', 'rocket2HPFail', 'rocket3CargoSuccess', 'rocket3CargoFail', 'rocket3HPSuccess', 'rocket3HPFail']
     var primaryKeys = ['cargoShipCargo', 'cargoShipHP', 'rocket1Cargo', 'rocket1HP', 'rocket2Cargo', 'rocket2HP', 'rocket3Cargo', 'rocket3HP']
 
-    var finalPoints = ['comments', 'strengths', 'weaknesses']
+    var finalPoints = ['strengths', 'weaknesses']
 
     for (var team in data) {
         //console.log(team)
@@ -828,7 +826,6 @@ function loadTeam(team) {
 
         }
 
-        $('#comments').html(teamData[team]['comments'].join('<br><br>'))
         $('#strengths').html(teamData[team]['strengths'].join('<br><br>'))
         $('#weakness').html(teamData[team]['weaknesses'].join('<br><br>'))
 
