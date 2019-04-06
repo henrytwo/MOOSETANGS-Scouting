@@ -112,6 +112,23 @@ var teamTemplate = {
 
 
 $(document).ready(function () {
+    $('#clear-data').on('click', function() {
+        var stuff = prompt('Are you SURE you want to delete ALL data currently stored locally? Type \'I am a dummy\' to confirm that you want to clear local storage.')
+
+        if (stuff == 'I am a dummy') {
+
+            localStorage.clear()
+
+            alert('Data cleared')
+            location.reload()
+
+        } else {
+            alert('You are a dummy')
+        }
+
+    })
+
+
     function injectData(data) {
         for (var i in fields["radio"]) {
             var id = fields["radio"][i]
