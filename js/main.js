@@ -767,6 +767,27 @@ function generateOverview() {
             }
         }
 
+        var cleanedStrengths = []
+        var cleanedWeaknesses = []
+
+        for (var thing in teamData[team]['strengths']) {
+            thing = teamData[team]['strengths'][thing].trim()
+
+            if (thing.length > 0) {
+                cleanedStrengths.push(thing);
+            }
+        }
+        for (var thing in teamData[team]['weaknesses']) {
+            thing = teamData[team]['weaknesses'][thing].trim()
+
+            if (thing.length > 0) {
+                cleanedWeaknesses.push(thing);
+            }
+        }
+
+        teamData[team]['strengths'] = cleanedStrengths
+        teamData[team]['weaknesses'] = cleanedWeaknesses
+
         stats['Teams']++
     }
 
@@ -779,6 +800,8 @@ function generateOverview() {
     buffer = buffer.substring(0, buffer.length - 3)
 
     $('#statistics').html('<b>' + buffer + '</b>')
+
+
 
     sessionStorage.teamData = JSON.stringify(teamData)
 
@@ -805,8 +828,8 @@ function loadTeam(team) {
             if (key == 'climb0') {
                 tableBuffer += '<tr>' +
                     '<td></td>' +
-                    '<td>Success Rate (%)</td>' +
-                    '<td>Usage Rate (%)</td>' +
+                    '<td><b>Usage Rate (%)</b></td>' +
+                    '<td><b>Average Time</b></td>' +
                     '<td></td>' +
                     '</tr>'
             }
@@ -829,7 +852,7 @@ function loadTeam(team) {
 
                 tableBuffer += '<tr>\n' +
                     '    <td>\n' +
-                    '        <b>ASDASD' + key + '</b>\n' +
+                    '        <b>' + key + '</b>\n' +
                     '    </td>\n' +
                     '    <td>\n' +
                     '        ' + teamData[team]['rates'][key] + '\n' +
