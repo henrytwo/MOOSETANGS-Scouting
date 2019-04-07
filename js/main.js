@@ -830,7 +830,7 @@ function loadTeam(team) {
                     '<td></td>' +
                     '<td><b>Usage Rate (%)</b></td>' +
                     '<td><b>Average Time</b></td>' +
-                    '<td></td>' +
+                    '<td><b>Total #</b></td>' +
                     '</tr>'
             }
 
@@ -846,6 +846,9 @@ function loadTeam(team) {
                     '    <td>\n' +
                     '        ' + teamData[team]['average'][key] + '\n' +
                     '    </td>\n' +
+                    '    <td>\n' +
+                    '        ' + teamData[team][key + 'Success'] + '\n' +
+                    '    </td>\n' +
                     ' </tr> '
 
             } else {
@@ -860,6 +863,10 @@ function loadTeam(team) {
                     '    <td>\n' +
                     '        ' + teamData[team]['average'][key] + '\n' +
                     '    </td>\n' +
+                    '    <td>\n' +
+                    '        ' + teamData[team][key] + '\n' +
+                    '    </td>\n' +
+
                     ' </tr> '
 
             }
